@@ -1,7 +1,8 @@
-import Taro, { useState, useEffect, useDidShow, useShareAppMessage, usePullDownRefresh } from '@tarojs/taro';
+import Taro, { useState, useEffect, useShareAppMessage, usePullDownRefresh } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import { AtToast } from 'taro-ui';
-import Header from '../../components/header/header'
+import Header from '../../components/header/header';
+import NewTabBar from '../../components/newTabBar/newTabBar';
 import './index.scss';
 /* 
 首页
@@ -10,19 +11,6 @@ date: 2020-02-25
 function Index() {
   const [isOpened, setIsOpened] = useState(false);
   // 更新机制
-  useEffect(() => {
-    if (process.env.TARO_ENV !== 'weapp') return;
-    let updateManager = Taro.getUpdateManager();
-    updateManager.onCheckForUpdate((res) => {
-      setIsOpened(res.hasUpdate);
-    });
-    updateManager.onUpdateReady((res) => {
-      updateManager.applyUpdate();
-    });
-  }, []);
-  useDidShow(() => {
-    console.log('进入了首页');
-  });
   usePullDownRefresh(() => {
     console.log('你下拉了刷新');
   });
@@ -38,6 +26,7 @@ function Index() {
     <View className="index">
       <AtToast isOpened={isOpened} text="检测到有新版本，即将自动更新"></AtToast>
       <Header></Header>
+      <NewTabBar count='0'></NewTabBar>
     </View>
   );
 }

@@ -23,43 +23,43 @@ class App extends Component {
       navigationBarTitleText: '轻云音乐',
       navigationBarTextStyle: 'black'
     },
-    tabBar: {
-      color: '#fff',
-      selectedColor: 'red',
-      backgroundColor: '#484848',
-      list: [
-        {
-          pagePath: 'pages/index/index',
-          iconPath: './common/img/cm2_btm_icn_discovery.png',
-          selectedIconPath: './common/img/cm2_btm_icn_discovery_prs.png',
-          text: '发现'
-        },
-        {
-          pagePath: 'pages/video/video',
-          iconPath: './common/img/10.png',
-          selectedIconPath: './common/img/11.png',
-          text: '视频'
-        },
-        {
-          pagePath: 'pages/me/me',
-          iconPath: './common/img/cm2_btm_icn_music.png',
-          selectedIconPath: './common/img/cm2_btm_icn_music_prs.png',
-          text: '我的'
-        },
-        {
-          pagePath: 'pages/bbs/bbs',
-          iconPath: './common/img/cm2_btm_icn_friend.png',
-          selectedIconPath: './common/img/cm2_btm_icn_friend_prs.png',
-          text: '云村'
-        },
-        {
-          pagePath: 'pages/user/user',
-          iconPath: './common/img/cm2_btm_icn_account.png',
-          selectedIconPath: './common/img/cm2_btm_icn_account_prs.png',
-          text: '账号'
-        }
-      ]
-    },
+    // tabBar: {
+    //   color: '#fff',
+    //   selectedColor: 'red',
+    //   backgroundColor: '#484848',
+    //   list: [
+    //     {
+    //       pagePath: 'pages/index/index',
+    //       iconPath: './common/img/cm2_btm_icn_discovery.png',
+    //       selectedIconPath: './common/img/cm2_btm_icn_discovery_prs.png',
+    //       text: '发现'
+    //     },
+    //     {
+    //       pagePath: 'pages/video/video',
+    //       iconPath: './common/img/10.png',
+    //       selectedIconPath: './common/img/11.png',
+    //       text: '视频'
+    //     },
+    //     {
+    //       pagePath: 'pages/me/me',
+    //       iconPath: './common/img/cm2_btm_icn_music.png',
+    //       selectedIconPath: './common/img/cm2_btm_icn_music_prs.png',
+    //       text: '我的'
+    //     },
+    //     {
+    //       pagePath: 'pages/bbs/bbs',
+    //       iconPath: './common/img/cm2_btm_icn_friend.png',
+    //       selectedIconPath: './common/img/cm2_btm_icn_friend_prs.png',
+    //       text: '云村'
+    //     },
+    //     {
+    //       pagePath: 'pages/user/user',
+    //       iconPath: './common/img/cm2_btm_icn_account.png',
+    //       selectedIconPath: './common/img/cm2_btm_icn_account_prs.png',
+    //       text: '账号'
+    //     }
+    //   ]
+    // },
     permission: {
       // 'scope.userLocation': {
       //   desc: '欢迎使用轻天气，我们需要你授权地理位置信息！'

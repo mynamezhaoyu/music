@@ -12,6 +12,7 @@ function Header() {
   let [inputVal, setInputVal] = useState('');
   let [banners, setBanners] = useState([]);
   useEffect(() => {
+    console.log(banners);
     Taro.request({
       url: 'https://www.wwxinmao.top/music/banner?type=2',
       method: 'GET',
