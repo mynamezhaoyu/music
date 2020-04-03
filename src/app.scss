@@ -3,12 +3,10 @@ body {
   font-size: 24px;
   color: #fff;
 }
+#app {
+}
 .none {
   display: none;
-}
-#app {
-  height: 100%;
-  background-color: #242424;
 }
 .weui-tabbar__item {
   span {
@@ -19,5 +17,17 @@ body {
 .weui-bar__item_on {
   span {
     background-color: #e61607;
+  }
+}
+.header-search.at-search-bar {
+  background-color: transparent;
+  .at-search-bar__input-cnt {
+    background-color: #484848;
+    .at-icon-search {
+      color: #fff;
+    }
+    .weui-input {
+      color: #fff;
+    }
   }
 }

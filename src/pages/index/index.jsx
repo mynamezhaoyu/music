@@ -26,7 +26,7 @@ function Index() {
     <View className="index">
       <AtToast isOpened={isOpened} text="检测到有新版本，即将自动更新"></AtToast>
       <Header></Header>
-      <NewTabBar count='0'></NewTabBar>
+      {/* <NewTabBar count='0'></NewTabBar> */}
     </View>
   );
 }

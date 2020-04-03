@@ -9,7 +9,7 @@ date: 2020-03-04
 function NewTabBar(props) {
   const arr = ['index', 'user'];
   const goToNewPage = (val) => {
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: `/pages/${arr[val]}/${arr[val]}`
     });
   };

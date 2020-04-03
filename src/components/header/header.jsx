@@ -12,7 +12,6 @@ function Header() {
   let [inputVal, setInputVal] = useState('');
   let [banners, setBanners] = useState([]);
   useEffect(() => {
-    console.log(banners);
     Taro.request({
       url: 'https://www.wwxinmao.top/music/banner?type=2',
       method: 'GET',
@@ -26,17 +25,14 @@ function Header() {
   }, []);
   return (
     <View className="header">
-      <AtNavBar color="#000" leftText="" rightFirstIconType="sound">
-        <AtSearchBar actionName="取消" value={inputVal} />
-      </AtNavBar>
-
+      <AtSearchBar actionName="取消" value={inputVal} className="header-search" />
       <View className="banner">
-        <Swiper indicatorColor="#fff" indicatorActiveColor="red" circular={true} indicatorDots autoplay>
+        <Swiper indicatorColor="#fff" indicatorActiveColor="red" circular={true} indicatorDots autoplay className="header-swiper">
           {banners.map((r) => {
             return (
               <SwiperItem>
                 <Image src={r.pic} className="banner-img"></Image>
-                <View style={{ backgroundColor: r.titleColor }} className="icon">
+                <View style={{ backgroundColor: r.titleColor,color: '#fff' }} className="icon">
                   {r.typeTitle}
                 </View>
               </SwiperItem>
