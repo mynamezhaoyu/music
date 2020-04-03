@@ -1,0 +1,16 @@
+.user {
+  .login {
+    text-align: center;
+    font-size: 28px;
+    .login-title {
+      margin: 10px 0;
+      display: inline-block;
+    }
+    .login-button {
+      margin: 20px auto;
+      width: 30%;
+      background-color: #e61607;
+      border-color: #e61607;
+    }
+  }
+}

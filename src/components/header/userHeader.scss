@@ -1,0 +1,13 @@
+.userHeader {
+  height: 84px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .img {
+    margin-right: 10px;
+    border-radius: 50%;
+    height: 64px;
+    width: 64px;
+  }
+}

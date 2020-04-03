@@ -1,0 +1,59 @@
+.header {
+  .at-nav-bar {
+    background-color: transparent;
+    .at-nav-bar__left-view {
+      flex: 0;
+      padding: 0;
+    }
+    .at-nav-bar__title {
+      flex: 7;
+      .at-search-bar {
+        background-color: transparent;
+        border: 0px;
+        .at-search-bar__input-cnt {
+          background-color: #484848;
+          .at-icon-search {
+            color: #fff;
+          }
+          .weui-input {
+            color: #fff;
+          }
+        }
+      }
+      & > ::after {
+        border-color: transparent;
+      }
+    }
+    .at-nav-bar__right-view {
+      flex: 1;
+      .at-nav-bar__container {
+        color: #fff !important;
+        width: 100%;
+      }
+      .at-nav-bar__container--hide {
+        width: 0;
+        padding: 0;
+      }
+    }
+  }
+  & > ::after {
+    border-color: transparent;
+  }
+  .banner {
+    overflow: hidden;
+    margin: 20px;
+    border-radius: 10px;
+    position: relative;
+    .banner-img {
+      height: 100%;
+      width: 100%;
+    }
+    .icon{
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      padding: 5px 10px;
+      border-top-left-radius: 10px;
+    }
+  }
+}

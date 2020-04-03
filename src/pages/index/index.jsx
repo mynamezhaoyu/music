@@ -1,0 +1,48 @@
+import Taro, { useState, useEffect, useDidShow, useShareAppMessage, usePullDownRefresh } from '@tarojs/taro';
+import { View } from '@tarojs/components';
+import { AtToast } from 'taro-ui';
+import Header from '../../components/header/header'
+import './index.scss';
+/* 
+首页
+date: 2020-02-25
+*/
+function Index() {
+  const [isOpened, setIsOpened] = useState(false);
+  // 更新机制
+  useEffect(() => {
+    if (process.env.TARO_ENV !== 'weapp') return;
+    let updateManager = Taro.getUpdateManager();
+    updateManager.onCheckForUpdate((res) => {
+      setIsOpened(res.hasUpdate);
+    });
+    updateManager.onUpdateReady((res) => {
+      updateManager.applyUpdate();
+    });
+  }, []);
+  useDidShow(() => {
+    console.log('进入了首页');
+  });
+  usePullDownRefresh(() => {
+    console.log('你下拉了刷新');
+  });
+  if (process.env.TARO_ENV === 'weapp') {
+    useShareAppMessage(() => {
+      return {
+        title: '你的好友为你分享了轻云音乐',
+        path: 'pages/index/index'
+      };
+    });
+  }
+  return (
+    <View className="index">
+      <AtToast isOpened={isOpened} text="检测到有新版本，即将自动更新"></AtToast>
+      <Header></Header>
+    </View>
+  );
+}
+export default Index;
+Index.config = {
+  navigationBarTitleText: '首页',
+  enablePullDownRefresh: true
+};
