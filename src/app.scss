@@ -1,9 +1,19 @@
 body {
   font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+page {
   font-size: 24px;
+  height: 100%;
   color: #fff;
+  background-color: $bg-color;
+  box-sizing: border-box;
 }
 #app {
+  box-sizing: border-box;
+  font-size: 24px;
+  height: 100%;
+  color: #fff;
+  background-color: $bg-color;
 }
 .none {
   display: none;
@@ -22,11 +32,24 @@ body {
 .header-search.at-search-bar {
   background-color: transparent;
   .at-search-bar__input-cnt {
-    background-color: #484848;
+    background-color: $bg-light-color;
     .at-icon-search {
       color: #fff;
     }
     .weui-input {
+      color: #fff;
+    }
+  }
+}
+.login-form.at-form {
+  color: #fff;
+  background-color: $bg-color;
+  .at-input {
+    background-color: $bg-color;
+    color: #fff;
+    margin: 0;
+    padding-left: 20px;
+    .at-input__input {
       color: #fff;
     }
   }

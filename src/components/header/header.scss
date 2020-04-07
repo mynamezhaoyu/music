@@ -1,5 +1,5 @@
 .header {
-  background-color: #242424;
+  background-color: $bg-color;
   overflow: hidden;
   & ::after {
     border-color: transparent;
@@ -19,7 +19,7 @@
       bottom: 0;
       right: 0;
       padding: 5px 10px;
-      border-top-left-radius: 10px;
+      border-top-left-radius: 17px;
     }
   }
 }

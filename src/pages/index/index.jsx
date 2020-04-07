@@ -33,5 +33,4 @@ function Index() {
 export default Index;
 Index.config = {
   navigationBarTitleText: '首页',
-  enablePullDownRefresh: true
 };

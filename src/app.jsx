@@ -17,11 +17,11 @@ class App extends Component {
   componentDidCatchError() {}
 
   config = {
-    pages: ['pages/index/index', 'pages/video/video', 'pages/me/me', 'pages/bbs/bbs', 'pages/user/user', 'pages/select/select', 'pages/login/login'],
+    pages: ['pages/index/index', 'pages/video/video', 'pages/me/me', 'pages/bbs/bbs', 'pages/user/user',  'pages/login/login'],
     window: {
-      navigationBarBackgroundColor: '#fff',
+      navigationBarBackgroundColor: '#242424',
       navigationBarTitleText: '轻云音乐',
-      navigationBarTextStyle: 'black',
+      backgroundColor: '#242424',
     },
     tabBar: {
       color: '#fff',

@@ -36,6 +36,9 @@ const config = {
   },
   plugins: [],
   defineConstants: {},
+  sass: {
+    resource: ['src/common/css/common.scss'] // scss全局变量
+  },
   mini: {
     postcss: {
       pxtransform: {

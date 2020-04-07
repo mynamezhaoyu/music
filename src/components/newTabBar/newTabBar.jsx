@@ -18,7 +18,7 @@ function NewTabBar(props) {
       <AtTabBar
         fixed
         current={Number(props.count)}
-        backgroundColor="#484848"
+        backgroundColor="$bg-light-color"
         color="#fff"
         selectedColor="#e61607"
         tabList={[

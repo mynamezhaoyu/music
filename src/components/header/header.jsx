@@ -32,7 +32,7 @@ function Header() {
             return (
               <SwiperItem>
                 <Image src={r.pic} className="banner-img"></Image>
-                <View style={{ backgroundColor: r.titleColor,color: '#fff' }} className="icon">
+                <View style={{ backgroundColor: r.titleColor === 'blue' ? '#4040c1': '#e61607',color: '#fff' }} className="icon">
                   {r.typeTitle}
                 </View>
               </SwiperItem>
