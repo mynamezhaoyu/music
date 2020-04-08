@@ -20,7 +20,7 @@ class App extends Component {
   componentDidCatchError() {}
 
   config = {
-    pages: ['pages/user/user','pages/index/index', 'pages/video/video', 'pages/me/me', 'pages/bbs/bbs', 'pages/login/login'],
+    pages: ['pages/me/me','pages/index/index', 'pages/video/video',  'pages/bbs/bbs', 'pages/login/login'],
     window: {
       navigationBarBackgroundColor: '#242424',
       navigationBarTitleText: '轻云音乐',
@@ -44,22 +44,16 @@ class App extends Component {
           text: '视频'
         },
         {
-          pagePath: 'pages/me/me',
-          iconPath: './common/img/cm2_btm_icn_music.png',
-          selectedIconPath: './common/img/cm2_btm_icn_music_prs.png',
-          text: '我的'
-        },
-        {
           pagePath: 'pages/bbs/bbs',
           iconPath: './common/img/cm2_btm_icn_friend.png',
           selectedIconPath: './common/img/cm2_btm_icn_friend_prs.png',
           text: '云村'
         },
         {
-          pagePath: 'pages/user/user',
-          iconPath: './common/img/cm2_btm_icn_account.png',
-          selectedIconPath: './common/img/cm2_btm_icn_account_prs.png',
-          text: '账号'
+          pagePath: 'pages/me/me',
+          iconPath: './common/img/cm2_btm_icn_music.png',
+          selectedIconPath: './common/img/cm2_btm_icn_music_prs.png',
+          text: '我的'
         }
       ]
     },

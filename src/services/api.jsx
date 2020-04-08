@@ -42,7 +42,7 @@ export default {
           onError('请先登录');
           return;
         }
-        onError(res.data.message);
+        onError(res.data.message || res.data.msg);
       },
       fail(err) {
         console.log(err);
