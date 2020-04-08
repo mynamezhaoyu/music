@@ -1070,6 +1070,24 @@
     node-sass "^4.12.0"
     scss-bundle "^2.5.1"
 
+"@tarojs/redux-h5@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.npm.taobao.org/@tarojs/redux-h5/download/@tarojs/redux-h5-2.1.1.tgz#d0b61753de5ec135b2c2fccb8e994f6e3c4f633f"
+  integrity sha1-0LYXU95ewTWywvzLjplPbjxPYz8=
+  dependencies:
+    hoist-non-react-statics "^2.5.0"
+    invariant "^2.2.4"
+    loose-envify "^1.1.0"
+    prop-types "^15.6.1"
+
+"@tarojs/redux@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.npm.taobao.org/@tarojs/redux/download/@tarojs/redux-2.1.1.tgz#9dd4518a18bc6c66590fffc01698f44be10756d3"
+  integrity sha1-ndRRihi8bGZZD//AFpj0S+EHVtM=
+  dependencies:
+    "@tarojs/taro" "2.1.1"
+    "@tarojs/utils" "2.1.1"
+
 "@tarojs/router@2.1.0":
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/@tarojs/router/download/@tarojs/router-2.1.0.tgz#4c91b1411ed31cb3a1849473ce0a789f3574da0c"
@@ -1190,6 +1208,13 @@
   dependencies:
     "@tarojs/utils" "2.1.0"
 
+"@tarojs/taro@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.npm.taobao.org/@tarojs/taro/download/@tarojs/taro-2.1.1.tgz#92cad682a454948f3dc4042352725e8f48992895"
+  integrity sha1-ksrWgqRUlI89xAQjUnJej0iZKJU=
+  dependencies:
+    "@tarojs/utils" "2.1.1"
+
 "@tarojs/transformer-wx@2.1.0":
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/@tarojs/transformer-wx/download/@tarojs/transformer-wx-2.1.0.tgz?cache=0&sync_timestamp=1585556924875&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40tarojs%2Ftransformer-wx%2Fdownload%2F%40tarojs%2Ftransformer-wx-2.1.0.tgz#7ee277615a9a8114a590bb29288cc79078314207"
@@ -1225,6 +1250,11 @@
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/@tarojs/utils/download/@tarojs/utils-2.1.0.tgz?cache=0&sync_timestamp=1585556909759&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40tarojs%2Futils%2Fdownload%2F%40tarojs%2Futils-2.1.0.tgz#7e7527937f0b5a0d51a3bc82d4c8a2d73c01897b"
   integrity sha1-fnUnk38LWg1Ro7yC1Mii1zwBiXs=
+
+"@tarojs/utils@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.npm.taobao.org/@tarojs/utils/download/@tarojs/utils-2.1.1.tgz#15974bb2ef9c4fd91334a46dbcca90fbcc115cc9"
+  integrity sha1-FZdLsu+cT9kTNKRtvMqQ+8wRXMk=
 
 "@tarojs/webpack-runner@2.1.0":
   version "2.1.0"
@@ -4147,6 +4177,11 @@ decode-uri-component@^0.2.0:
   resolved "https://registry.npm.taobao.org/decode-uri-component/download/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
+deep-diff@^0.3.5:
+  version "0.3.8"
+  resolved "https://registry.npm.taobao.org/deep-diff/download/deep-diff-0.3.8.tgz#c01de63efb0eec9798801d40c7e0dae25b582c84"
+  integrity sha1-wB3mPvsO7JeYgB1Ax+Da4ltYLIQ=
+
 deep-equal@^1.0.1:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/deep-equal/download/deep-equal-1.1.1.tgz?cache=0&sync_timestamp=1585727669927&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdeep-equal%2Fdownload%2Fdeep-equal-1.1.1.tgz#b5c98c942ceffaf7cb051e24e1434a25a2e6076a"
@@ -5735,6 +5770,11 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
+hoist-non-react-statics@^2.5.0:
+  version "2.5.5"
+  resolved "https://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
+  integrity sha1-xZA89AnA39kI84jmGdhrnBF0y0c=
+
 home-or-tmp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/home-or-tmp/download/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -6970,7 +7010,7 @@ longest-streak@^2.0.1:
   resolved "https://registry.npm.taobao.org/longest-streak/download/longest-streak-2.0.4.tgz#b8599957da5b5dab64dee3fe316fa774597d90e4"
   integrity sha1-uFmZV9pbXatk3uP+MW+ndFl9kOQ=
 
-loose-envify@^1.0.0, loose-envify@^1.4.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npm.taobao.org/loose-envify/download/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8=
@@ -9048,6 +9088,21 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
+redux-logger@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.npm.taobao.org/redux-logger/download/redux-logger-3.0.6.tgz#f7555966f3098f3c88604c449cf0baf5778274bf"
+  integrity sha1-91VZZvMJjzyIYExEnPC69XeCdL8=
+  dependencies:
+    deep-diff "^0.3.5"
+
+redux@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.npm.taobao.org/redux/download/redux-4.0.5.tgz?cache=0&sync_timestamp=1577154206919&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fredux%2Fdownload%2Fredux-4.0.5.tgz#4db5de5816e17891de8a80c424232d06f051d93f"
+  integrity sha1-TbXeWBbheJHeioDEJCMtBvBR2T8=
+  dependencies:
+    loose-envify "^1.4.0"
+    symbol-observable "^1.2.0"
+
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
   resolved "https://registry.npm.taobao.org/regenerate-unicode-properties/download/regenerate-unicode-properties-8.2.0.tgz?cache=0&sync_timestamp=1583975113523&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fregenerate-unicode-properties%2Fdownload%2Fregenerate-unicode-properties-8.2.0.tgz#e5de7111d655e7ba60c057dbe9ff37c87e65cdec"
@@ -10380,6 +10435,11 @@ swiper@4.4.2:
   dependencies:
     dom7 "^2.1.2"
     ssr-window "^1.0.1"
+
+symbol-observable@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npm.taobao.org/symbol-observable/download/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
+  integrity sha1-wiaIrtTqs83C3+rLtWFmBWCgCAQ=
 
 table@^4.0.1:
   version "4.0.3"

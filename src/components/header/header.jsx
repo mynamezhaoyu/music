@@ -1,8 +1,8 @@
 import Taro, { useState, useDidShow, useEffect } from '@tarojs/taro';
 import { Text, View, Swiper, SwiperItem, Image } from '@tarojs/components';
 import { AtNavBar, AtSearchBar } from 'taro-ui';
-import common from '../../common/js/common';
 import './header.scss';
+import http from '../../services/api'
 /* 
 搜索页
 date: 2020-03-04
@@ -12,13 +12,8 @@ function Header() {
   let [inputVal, setInputVal] = useState('');
   let [banners, setBanners] = useState([]);
   useEffect(() => {
-    Taro.request({
-      url: 'https://www.wwxinmao.top/music/banner?type=2',
-      method: 'GET',
-      data: {},
-      header: {
-        'content-type': 'application/json'
-      }
+    http.post('banner',{
+      type: 2
     }).then((res) => {
       setBanners(res.data.banners);
     });
