@@ -2,7 +2,6 @@ import Taro, { useState, useEffect, useShareAppMessage, usePullDownRefresh } fro
 import { View } from '@tarojs/components';
 import { AtToast } from 'taro-ui';
 import Header from '../../components/header/header';
-import NewTabBar from '../../components/newTabBar/newTabBar';
 import './index.scss';
 /* 
 首页
@@ -26,7 +25,6 @@ function Index() {
     <View className="index">
       <AtToast isOpened={isOpened} text="检测到有新版本，即将自动更新"></AtToast>
       <Header></Header>
-      {/* <NewTabBar count='0'></NewTabBar> */}
     </View>
   );
 }

@@ -1,64 +1,90 @@
-import Taro, { useState, useEffect } from '@tarojs/taro';
-import { View, Image } from '@tarojs/components';
 import './login.scss';
 import { AtInput, AtForm, AtButton } from 'taro-ui';
 import logo from '../../common/img/fm/logo.png';
+import Taro, { Component } from '@tarojs/taro';
+import { View, Image } from '@tarojs/components';
 import http from '../../services/api';
-/* 
-搜索页
-date: 2020-03-04
-*/
-function Login() {
-  const goback = () => {
-    Taro.navigateBack({ delta: 1 });
+
+export default class Login extends Component {
+  config = {
+    navigationBarTitleText: '登录'
   };
-  const [phone, setPhone] = useState('13370229059');
-  const [password, setPassword] = useState('Hly421Zy517');
-  const [loginDisabled, setLoginDisabled] = useState(false);
-  const phoneChange = (val) => {
-    setPhone(val);
-  };
-  const passwordChange = (val) => {
-    setPassword(val);
-    phone.length === 11 && val.length > 6 ? setLoginDisabled(false) : setLoginDisabled(true);
-  };
-  const login = () => {
-    Taro.clearStorageSync();
-    http.post('logout').then(() => {
-      http
-      .post('login/cellphone', {
-        phone: phone,
-        password: password
-      })
-      .then((res) => {
-        if (res.statusCode === 200) {
-          Taro.showToast({
-            title: '登陆成功',
-            icon: 'success'
-          });
-          console.log(res);
-          if (res.code === 200) {
-            Taro.setStorageSync('userInfo', res.data)
-            Taro.setStorageSync('userId', res.data.account.id)
-          }
-          goback();
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      phone: '13370229059',
+      password: 'ZyHly517421',
+      loginDisabled: false
+    };
+  }
+  fun = {
+    goback() {
+      Taro.navigateBack({ delta: 1 });
+    },
+    phoneChange(val) {
+      this.setState({
+        phone: val
       });
-    })
+    },
+    passwordChange(val) {
+      const pk = this.state.phone.length === 11 && val.length > 6 ? false : true;
+      this.setState({
+        password: val,
+        loginDisabled: pk
+      });
+    },
+    login() {
+      Taro.clearStorage();
+      http.get(`login/cellphone?phone=${this.state.phone}&password=${this.state.password}&timestamp=${new Date()}`).then((res) => {
+        if (res.code === 502) {
+          Taro.showToast({
+            title: res.msg || ''
+          });
+          return;
+        }
+        Taro.showToast({
+          title: '登陆成功',
+          icon: 'success'
+        });
+        Taro.setStorageSync('userData', res.data);
+        Taro.setStorageSync('userId', res.data.account.id);
+        this.fun.goback();
+      });
+    }
   };
-  return (
-    <View className="login">
-      <View className="box">
-        <Image src={logo} mode="aspectFit" className="img" onClick={goback} />
+  componentDidMount() {}
+  render() {
+    return (
+      <View className="login">
+        <View className="box">
+          <Image src={logo} mode="aspectFit" className="img" onClick={this.fun.goback.bind(this)} />
+        </View>
+        <AtForm className="login-form">
+          <AtInput
+            name="value1"
+            title="账号"
+            type="number"
+            placeholder="请输入手机号码"
+            value={this.state.phone}
+            onChange={this.fun.phoneChange.bind(this)}
+            maxLength={11}
+            focus={true}
+          />
+          <AtInput
+            name="password"
+            title="密码"
+            type="password"
+            placeholder="请输入密码"
+            value={this.state.password}
+            onChange={this.fun.passwordChange.bind(this)}
+            border={false}
+            maxLength={140}
+          />
+        </AtForm>
+        <AtButton type="secondary" circle className="login-button" disabled={this.state.loginDisabled} onClick={this.fun.login.bind(this)}>
+          登录
+        </AtButton>
       </View>
-      <AtForm className="login-form">
-        <AtInput name="value1" title="账号" type="phone" placeholder="请输入手机号码" value={phone} onChange={phoneChange} focus={true} />
-        <AtInput name="password" title="密码" type="password" placeholder="请输入密码" value={password} onChange={passwordChange} border={false} maxLength={140}/>
-      </AtForm>
-      <AtButton type="secondary" circle className="login-button" disabled={loginDisabled} onClick={login}>
-        登录
-      </AtButton>
-    </View>
-  );
+    );
+  }
 }
-export default Login;

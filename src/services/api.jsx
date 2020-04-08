@@ -11,13 +11,12 @@ export default {
     let { url, data } = params;
     let contentType = 'application/json';
     contentType = params.contentType || contentType;
-
     const setCookie = (res) => {
       if (res.data.cookie && res.data.cookie.length > 0) {
         Taro.clearStorage();
         let cookies = '';
         res.data.cookie.forEach((cookie, index) => {
-            cookies += `${cookie};`;
+          cookies += `${cookie};`;
         });
         Taro.setStorageSync('cookies', cookies);
       }
@@ -28,7 +27,8 @@ export default {
       method: method,
       credentials: 'include',
       header: {
-        'content-type': contentType
+        'content-type': contentType,
+        cookie
       },
       xhrFields: { withCredentials: true },
       success(res) {
@@ -39,16 +39,14 @@ export default {
         }
         if (res.data.code === 301) {
           Taro.clearStorage();
-          Taro.navigateTo({
-            url: '/pages/login/login'
-          });
           onError('请先登录');
           return;
         }
         onError(res.data.message);
       },
-      error() {
-        onError('请求接口出现问题');
+      fail(err) {
+        console.log(err);
+        onError(err.statusText);
       }
     };
     return Taro.request(option);
