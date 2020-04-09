@@ -1,0 +1,12 @@
+.person-scroll {
+  white-space: nowrap;
+  margin: 0 10px;
+  .list {
+    display: inline-flex;
+    margin: 0 10px;
+    .img {
+      width: 200px;
+      height: 200px;
+    }
+  }
+}

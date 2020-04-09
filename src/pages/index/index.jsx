@@ -5,14 +5,14 @@ import Personalized from '../../components/personalized/personalized';
 import './index.scss';
 import http from '../../services/api';
 import { connect } from '@tarojs/redux';
-import { addBanner } from '../../actions/counter';
+import { addRedux } from '../../actions/counter';
 @connect(
   ({ counter }) => ({
     counter
   }),
   (dispatch) => ({
-    addBanner(val) {
-      dispatch(addBanner(val));
+    addRedux(val, type) {
+      dispatch(addRedux(val, type));
     }
   })
 )
@@ -22,7 +22,7 @@ export default class Index extends Component {
   };
   constructor(props) {
     super(props);
-    this.state = { banners: [] };
+    this.state = {};
   }
   componentDidShow() {}
   componentDidMount() {
@@ -35,11 +35,11 @@ export default class Index extends Component {
           type: 2
         })
         .then((res) => {
-          this.setState({
-            banners: res.data.banners
-          });
-          this.props.addBanner(res.data.banners)
+          this.props.addRedux(res.data.banners, 'addBanner');
         });
+      http.get('personalized?limit=10').then((res) => {
+        this.props.addRedux(res.data.result, 'addPersonalized');
+      });
     }
   };
   render() {

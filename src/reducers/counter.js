@@ -1,7 +1,8 @@
-import { ADDBANNER } from '../constants/counter';
+import { ADDBANNER, ADDPERSONALIZED } from '../constants/counter';
 
 const INITIAL_STATE = {
-  banner: []
+  banner: [],
+  personalized: []
 };
 
 export default function counter(state = INITIAL_STATE, action) {
@@ -11,6 +12,12 @@ export default function counter(state = INITIAL_STATE, action) {
       return {
         ...state,
         banner: action.data
+      };
+    case ADDPERSONALIZED:
+      // banners 数据
+      return {
+        ...state,
+        personalized: action.data
       };
     default:
       return state;

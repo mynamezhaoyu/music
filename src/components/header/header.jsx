@@ -25,7 +25,7 @@ class Header extends Component {
           <Swiper indicatorColor="#fff" indicatorActiveColor="red" circular={true} indicatorDots autoplay className="header-swiper">
             {this.props.counter.banner.map((r) => {
               return (
-                <SwiperItem>
+                <SwiperItem key={r.pic}>
                   <Image src={r.pic} className="banner-img"></Image>
                   <View style={{ backgroundColor: r.titleColor === 'blue' ? '#4040c1' : '#e61607', color: '#fff' }} className="icon">
                     {r.typeTitle}

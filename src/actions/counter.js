@@ -1,10 +1,6 @@
-import {
-  ADDBANNER
-} from '../constants/counter'
-
-export const addBanner = (val) => {
+export const addRedux = (val, type) => {
   return {
-    type: ADDBANNER,
+    type: type.toUpperCase(),
     data: val
-  }
-}
+  };
+};
