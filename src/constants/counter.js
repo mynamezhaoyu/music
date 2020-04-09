@@ -1,1 +1,1 @@
-export const USERINFO = 'USERINFO'
+export const ADDBANNER = 'ADDBANNER'

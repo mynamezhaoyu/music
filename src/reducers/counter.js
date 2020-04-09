@@ -1,17 +1,18 @@
-import { USERINFO } from '../constants/counter'
+import { ADDBANNER } from '../constants/counter';
 
 const INITIAL_STATE = {
-  userInfo: 0
-}
+  banner: []
+};
 
-export default function counter (state = INITIAL_STATE, action) {
+export default function counter(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case USERINFO:
+    case ADDBANNER:
+      // banners 数据
       return {
         ...state,
-        userInfo: action.data
-      }
-     default:
-       return state
+        banner: action.data
+      };
+    default:
+      return state;
   }
 }

@@ -3,22 +3,8 @@ import { View, Image } from '@tarojs/components';
 import { AtButton } from 'taro-ui';
 import UserHeader from '../../components/header/userHeader';
 import http from '../../services/api';
-import { connect } from '@tarojs/redux';
-import { userInfo, asyncAdd } from '../../actions/counter';
 import './me.scss';
-@connect(
-  ({ counter }) => ({
-    counter
-  }),
-  (dispatch) => ({
-    userInfo(val) {
-      dispatch(userInfo(val));
-    },
-    asyncAdd() {
-      dispatch(asyncAdd());
-    }
-  })
-)
+import moment from '../../common/js/moment';
 export default class User extends Component {
   config = {
     navigationBarTitleText: '账号'
@@ -26,9 +12,8 @@ export default class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: {},
-      userId: {},
-      userDetail: {}
+      userDetail: {},
+      singinDisabled: false
     };
   }
   fun = {
@@ -37,13 +22,19 @@ export default class User extends Component {
         url: '/pages/login/login'
       });
     },
-    signin() {
-      http.get('daily_signin').then((res) => {
-        if (res.code === 200) {
-          Taro.showToast({
-            title: '签到成功'
-          });
-        }
+    async signin() {
+      // https://music.163.com/weapi/point/dailyTask
+      http.get(`daily_signin?type=1&timestamp=${new Date()}`).then((res) => {
+        if (res.data.code !== 200) return;
+        Taro.showToast({
+          title: '签到成功'
+        });
+        Taro.setStorage({
+          key: 'daily_signin',
+          data: {
+            date: moment().format('YYYY-MM-DD')
+          }
+        });
       });
     },
     logout() {
@@ -53,7 +44,7 @@ export default class User extends Component {
         });
         Taro.clearStorage();
         this.setState({
-          userData: {}
+          userDetail: {}
         });
       });
     }
@@ -61,32 +52,45 @@ export default class User extends Component {
   componentDidMount() {
     // 整个页面只需要执行一次的时候用这个
   }
-  async getStatus() {
-    // 如果cooking没有里没有用户信息，不调取接口了
-    await Taro.getStorage({
-      key: 'userData',
-      success: function(res) {
-        console.log(res.data);
-      }
-    });
-    console.log(1);
-    if (!Object.keys(this.state.userData).length) return;
-    http.get(`user/detail?uid=${this.state.userId}`).then((res) => {
-      this.setState({
-        userDetail: res.data
-      });
-      console.log(res.data);
-    });
-  }
   componentDidShow() {
     this.getStatus();
   }
+  async getStatus() {
+    let [data, isSingin] = [{}];
+    try {
+      isSingin = await Taro.getStorage({
+        key: 'daily_signin',
+        fail: () => {}
+      });
+    } catch (err) {}
+    // 如果是isSingin undefined证明第一次用
+    if (isSingin && !moment(isSingin.data.date).isBefore(moment().format('YYYY-MM-DD'), 'day')) {
+      this.setState({ singinDisabled: true });
+    }
+    await Taro.getStorage({
+      key: 'userData',
+      success: (res) => {
+        data = { ...{ userData: res.data, userId: res.data.profile.userId } };
+      },
+      fail: () => {
+        Taro.showToast({
+          title: '登录体验更多功能',
+          icon: 'none'
+        });
+      }
+    });
+    // 如果cooking没有里没有用户信息，不调取接口了
+    if (!Object.keys(data.userData).length) return;
+    http.get(`user/detail?uid=${data.userId}`).then((res) => {
+      this.setState({ userDetail: res.data });
+    });
+  }
   render() {
-    const { userData, userDetail } = this.state;
+    const { userDetail } = this.state;
     return (
       <View className="user">
         <UserHeader></UserHeader>
-        {!Object.keys(userData).length && (
+        {!Object.keys(userDetail).length && (
           <View className="login">
             <View className="login-title">手机电脑多段同步，尽享海量高品质音乐</View>
             <AtButton type="primary" size="small" circle className="login-button theme-button" onClick={this.fun.login.bind(this)}>
@@ -94,17 +98,24 @@ export default class User extends Component {
             </AtButton>
           </View>
         )}
-        {Object.keys(userData).length ? (
+        {Object.keys(userDetail).length ? (
           <View className="info">
             <View className="header">
               <View className="box">
-                <Image src={userData.profile.avatarUrl} mode="widthFix" className="user-img"></Image>
+                <Image src={userDetail.profile.avatarUrl} mode="widthFix" className="user-img"></Image>
                 <View className="name">
-                  <View>{userData.profile.nickname}</View>
+                  <View>{userDetail.profile.nickname}</View>
                   <View className="level">Lv.{userDetail.level}</View>
                 </View>
               </View>
-              <AtButton type="primary" size="small" circle className="theme-button m-0" onClick={this.fun.signin.bind(this)}>
+              <AtButton
+                type="primary"
+                size="small"
+                circle
+                className="theme-button m-0"
+                onClick={this.fun.signin.bind(this)}
+                disabled={this.state.singinDisabled}
+              >
                 签到
               </AtButton>
             </View>

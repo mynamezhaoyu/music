@@ -1,18 +1,10 @@
 import {
-  USERINFO
+  ADDBANNER
 } from '../constants/counter'
 
-export const userInfo = (val) => {
+export const addBanner = (val) => {
   return {
-    type: USERINFO,
+    type: ADDBANNER,
     data: val
-  }
-}
-// 异步的action
-export function asyncAdd () {
-  return dispatch => {
-    setTimeout(() => {
-      dispatch(add())
-    }, 2000)
   }
 }

@@ -13,7 +13,7 @@ export default {
     contentType = params.contentType || contentType;
     const setCookie = (res) => {
       if (res.data.cookie && res.data.cookie.length > 0) {
-        Taro.clearStorage();
+        Taro.removeStorage('cookies');
         let cookies = '';
         res.data.cookie.forEach((cookie, index) => {
           cookies += `${cookie};`;
@@ -38,7 +38,7 @@ export default {
           return res.data;
         }
         if (res.data.code === 301) {
-          Taro.clearStorage();
+          Taro.removeStorage('cookies');
           onError('请先登录');
           return;
         }
