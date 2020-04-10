@@ -1,12 +1,45 @@
-.person-scroll {
-  white-space: nowrap;
-  margin: 0 10px;
-  .list {
-    display: inline-flex;
+.personalized {
+  .person-scroll {
+    white-space: nowrap;
     margin: 0 10px;
-    .img {
+    .list {
+      display: inline-flex;
+      flex-direction: column;
+      margin: 0 10px;
       width: 200px;
-      height: 200px;
+      .item {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        .img {
+          border-radius: 10px;
+          width: 200px;
+          height: 200px;
+        }
+        .icon {
+          position: absolute;
+          bottom: 5%;
+          right: 5%;
+        }
+        .playCount {
+          position: absolute;
+          top: 0;
+          right: 5%;
+        }
+      }
+      .name {
+        white-space: initial;
+        height: 80px;
+        line-height: 40px;
+      }
     }
+  }
+  .title {
+    margin: 0 0 0 15px;
+    color: #a9a9a9;
+  }
+  .slogan {
+    margin: 0 0 20px 15px;
+    font-size: 30px;
   }
 }

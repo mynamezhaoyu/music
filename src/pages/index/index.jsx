@@ -6,6 +6,7 @@ import './index.scss';
 import http from '../../services/api';
 import { connect } from '@tarojs/redux';
 import { addRedux } from '../../actions/counter';
+import IconFont from '../../components/iconfont';
 @connect(
   ({ counter }) => ({
     counter
@@ -26,7 +27,7 @@ export default class Index extends Component {
   }
   componentDidShow() {}
   componentDidMount() {
-    this.fun.getData();
+    if (!this.props.counter.banner.length) this.fun.getData();
   }
   fun = {
     getData: () => {
@@ -47,6 +48,7 @@ export default class Index extends Component {
       <View className="index">
         <Header></Header>
         <Personalized></Personalized>
+        <IconFont name='bofang1' size="40" />
       </View>
     );
   }

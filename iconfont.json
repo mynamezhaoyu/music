@@ -1,10 +1,10 @@
 {
-  "symbol_url": "//at.alicdn.com/t/font_1657866_wtfaex9i578.js",
-  "save_dir": "./src/components/iconfont",
-  "use_typescript": false,
-  "platforms": ["weapp", "h5", "alipay"],
-  "use_rpx": true,
-  "trim_icon_prefix": "icon",
-  "default_icon_size": 18,
-  "component_name": "IconFont"
+    "symbol_url": "//at.alicdn.com/t/font_1747103_t593mn1jl0e.js",
+    "save_dir": "./src/components/iconfont",
+    "use_typescript": false,
+    "platforms": "*",
+    "use_rpx": true,
+    "trim_icon_prefix": "icon",
+    "default_icon_size": 18,
+    "component_name": "IconFont"
 }
