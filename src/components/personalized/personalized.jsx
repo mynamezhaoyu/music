@@ -2,10 +2,11 @@ import Taro, { Component } from '@tarojs/taro';
 import { View, ScrollView, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './personalized.scss';
+import IconFont from '../iconfont';
 @connect(({ counter }) => ({
   counter
 }))
-export default class Personalized extends Component {
+class Personalized extends Component {
   render() {
     return (
       <View className="personalized">
@@ -18,6 +19,7 @@ export default class Personalized extends Component {
                 <View className="item">
                   <Image src={r.picUrl} className="img"></Image>
                   <View className="icon">
+                    <IconFont name="bofang1" size="40" />
                   </View>
                   <View className="playCount">{(r.playCount + '').length > 5 ? (r.playCount + ' ').slice(0, 3) + ' 万' : r.playCount}</View>
                 </View>
@@ -30,3 +32,4 @@ export default class Personalized extends Component {
     );
   }
 }
+export default Personalized;

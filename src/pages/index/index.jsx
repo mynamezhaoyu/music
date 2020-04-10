@@ -6,7 +6,6 @@ import './index.scss';
 import http from '../../services/api';
 import { connect } from '@tarojs/redux';
 import { addRedux } from '../../actions/counter';
-import IconFont from '../../components/iconfont';
 @connect(
   ({ counter }) => ({
     counter
@@ -17,7 +16,7 @@ import IconFont from '../../components/iconfont';
     }
   })
 )
-export default class Index extends Component {
+class Index extends Component {
   config = {
     navigationBarTitleText: '首页'
   };
@@ -48,8 +47,8 @@ export default class Index extends Component {
       <View className="index">
         <Header></Header>
         <Personalized></Personalized>
-        <IconFont name='bofang1' size="40" />
       </View>
     );
   }
 }
+export default Index;
