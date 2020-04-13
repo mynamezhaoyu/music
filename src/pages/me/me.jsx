@@ -23,19 +23,21 @@ export default class User extends Component {
       });
     },
     async signin() {
+      let dailySigninData;
       // https://music.163.com/weapi/point/dailyTask
-      http.get(`daily_signin?type=1&timestamp=${new Date()}`).then((res) => {
-        if (res.data.code !== 200) return;
+      try {
+        dailySigninData = await http.get(`daily_signin?type=1&timestamp=${new Date()}`);
+      } catch (error) {}
+      Taro.setStorage({
+        key: 'daily_signin',
+        data: moment().format('YYYY-MM-DD')
+      });
+      this.setState({ singinDisabled: true });
+      if (dailySigninData) {
         Taro.showToast({
           title: '签到成功'
         });
-        Taro.setStorage({
-          key: 'daily_signin',
-          data: {
-            date: moment().format('YYYY-MM-DD')
-          }
-        });
-      });
+      }
     },
     logout() {
       http.get(`logout?timestamp=${new Date()}`).then((res) => {
@@ -56,34 +58,65 @@ export default class User extends Component {
     this.getStatus();
   }
   async getStatus() {
-    let [data, isSingin] = [{}];
+    let [userId, userDate, userData, isSingin] = [];
     try {
+      // userId 在登陆的时候就存在了conking里面了
+      userId = await Taro.getStorage({
+        key: 'user_id',
+        fail: () => {}
+      });
+      // 上次掉接口调用user_data是什么时间
+      userDate = await Taro.getStorage({
+        key: 'user_date',
+        fail: () => {}
+      });
+      // 取存的user_data 数据
+      userData = await Taro.getStorage({
+        key: 'user_data',
+        fail: () => {}
+      });
+      // 取签到信息
       isSingin = await Taro.getStorage({
         key: 'daily_signin',
         fail: () => {}
       });
-    } catch (err) {}
-    // 如果是isSingin undefined证明第一次用
-    if (isSingin && !moment(isSingin.data.date).isBefore(moment().format('YYYY-MM-DD'), 'day')) {
-      this.setState({ singinDisabled: true });
+    } catch (e) {}
+    // 如果连userId都没拿到，证明根本没登陆过
+    if (!userId) {
+      Taro.showToast({
+        title: '登录体验更多功能',
+        icon: 'none'
+      });
+      return;
     }
-    await Taro.getStorage({
-      key: 'userData',
-      success: (res) => {
-        data = { ...{ userData: res.data, userId: res.data.profile.userId } };
-      },
-      fail: () => {
+    // 没有，或者有但是过期了。都重新调用接口
+    if (!userData || (userData && moment(userDate.data).isBefore(moment().format('YYYY-MM-DD'), 'day'))) {
+      userData = await http.get(`user/detail?uid=${userId.data}`);
+      // 取用户信息如果存在，存到数据中。并更新
+      if (userData) {
+        Taro.setStorage({
+          key: 'user_date',
+          data: moment().format('YYYY-MM-DD')
+        });
+        Taro.setStorage({
+          key: 'user_data',
+          data: userData.data
+        });
+      } else {
         Taro.showToast({
-          title: '登录体验更多功能',
+          title: '登陆信息过期，请重新登录',
           icon: 'none'
         });
+        return;
       }
-    });
-    // 如果cooking没有里没有用户信息，不调取接口了
-    if (!Object.keys(data.userData).length) return;
-    http.get(`user/detail?uid=${data.userId}`).then((res) => {
-      this.setState({ userDetail: res.data });
-    });
+    }
+    this.setState({ userDetail: userData.data });
+    // 如果是isSingin undefined证明第一次用签到
+    if (isSingin && !moment(isSingin.data).isBefore(moment().format('YYYY-MM-DD'), 'day')) {
+      this.setState({ singinDisabled: true });
+    } else {
+      this.setState({ singinDisabled: false });
+    }
   }
   render() {
     const { userDetail } = this.state;

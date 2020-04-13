@@ -46,8 +46,7 @@ export default class Login extends Component {
           title: '登陆成功',
           icon: 'success'
         });
-        Taro.setStorageSync('userData', res.data);
-        Taro.setStorageSync('userId', res.data.account.id);
+        Taro.setStorageSync('user_id', res.data.account.id);
         this.fun.goback();
       });
     }

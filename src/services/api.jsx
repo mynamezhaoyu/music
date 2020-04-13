@@ -7,18 +7,19 @@ const onError = (title) => {
 };
 export default {
   baseOptions(params, method = 'GET') {
-    let cookie = Taro.getStorageSync('cookies');
     let { url, data } = params;
     let contentType = 'application/json';
     contentType = params.contentType || contentType;
     const setCookie = (res) => {
-      if (res.data.cookie && res.data.cookie.length > 0) {
-        Taro.removeStorage('cookies');
+      if (res.cookies && res.cookies.length > 0) {
         let cookies = '';
-        res.data.cookie.forEach((cookie, index) => {
+        res.cookies.forEach((cookie, index) => {
           cookies += `${cookie};`;
         });
         Taro.setStorageSync('cookies', cookies);
+      }
+      if (res.header && res.header['Set-Cookie']) {
+        Taro.setStorageSync('cookies', res.header['Set-Cookie']);
       }
     };
     const option = {
@@ -28,7 +29,7 @@ export default {
       credentials: 'include',
       header: {
         'content-type': contentType,
-        cookie
+        cookie: Taro.getStorageSync('cookies')
       },
       xhrFields: { withCredentials: true },
       success(res) {
@@ -45,8 +46,8 @@ export default {
         onError(res.data.message || res.data.msg);
       },
       fail(err) {
-        console.log(err);
         onError(err.statusText);
+        return err;
       }
     };
     return Taro.request(option);

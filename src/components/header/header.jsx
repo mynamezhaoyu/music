@@ -23,9 +23,9 @@ class Header extends Component {
         <AtSearchBar actionName="取消" value={this.state.inputVal} className="header-search" />
         <View className="banner">
           <Swiper indicatorColor="#fff" indicatorActiveColor="red" circular={true} indicatorDots autoplay className="header-swiper">
-            {this.props.counter.banner.map((r) => {
+            {this.props.counter.banner.map((r, i) => {
               return (
-                <SwiperItem key={r.pic}>
+                <SwiperItem key={r.pic + i}>
                   <Image src={r.pic} className="banner-img"></Image>
                   <View style={{ backgroundColor: r.titleColor === 'blue' ? '#4040c1' : '#e61607', color: '#fff' }} className="icon">
                     {r.typeTitle}
