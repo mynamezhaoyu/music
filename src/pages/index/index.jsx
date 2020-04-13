@@ -2,6 +2,7 @@ import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import Header from '../../components/header/header';
 import Personalized from '../../components/personalized/personalized';
+import Play from '../../components/play/index';
 import './index.scss';
 import http from '../../services/api';
 import { connect } from '@tarojs/redux';
@@ -40,13 +41,27 @@ class Index extends Component {
       http.get('personalized?limit=10').then((res) => {
         this.props.addRedux(res.data.result, 'addPersonalized');
       });
+    },
+    async handleClickplay(val) {
+      let data = await http.get('playlist/detail', {
+        id: val.id,
+        timestamp: new Date()
+      });
+      let track = await http.get('song/url', {
+        id: data.data.playlist.trackIds.map((r) => r.id).join(','),
+        timestamp: new Date()
+      });
+      //addPlayList addSongUrl
+      this.props.addRedux(data.data, 'addPlayList');
+      this.props.addRedux(track.data.data, 'addSongUrl');
     }
   };
   render() {
     return (
       <View className="index">
         <Header></Header>
-        <Personalized></Personalized>
+        <Personalized handleClickplay={this.fun.handleClickplay.bind(this)}></Personalized>
+        <Play></Play>
       </View>
     );
   }

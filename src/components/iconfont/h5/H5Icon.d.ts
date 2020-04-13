@@ -3,7 +3,7 @@
 import { CSSProperties, DOMAttributes, FunctionComponent } from 'react';
 
 interface Props extends DOMAttributes<SVGElement> {
-  name: 'bofang1' | 'bofang';
+  name: 'xiayishou5' | 'shangyishou5' | 'zanting' | 'bofang1';
   size?: number;
   color?: string | string[];
   style?: CSSProperties;

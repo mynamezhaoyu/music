@@ -15,13 +15,19 @@ page {
 .none {
   display: none;
 }
+.fixed {
+  bottom: 0;
+  /* 在 H5 模式下将会编译成 margin-bottom: 50px，在小程序模式下则会忽略 */
+  margin-bottom: taro-tabbar-height;
+}
+
 .weui-tabbar__item {
   span {
     border-radius: 50%;
     border: 10px solid transparent;
     img {
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
     }
   }
 }
