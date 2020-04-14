@@ -2,7 +2,7 @@
   position: fixed;
   width: 100%;
   .main {
-    height: 100px;
+    height: 120px;
     width: 96%;
     margin: 0 auto;
     margin-bottom: 20px;
@@ -15,17 +15,41 @@
       width: 90px;
       border-radius: 50%;
       margin-left: 10px;
+      animation: turn 40s linear infinite;
+    }
+    .animation-paused {
+      animation-play-state: paused;
+    }
+    .animation-running {
+      animation-play-state: running;
     }
     .info {
       display: flex;
       flex-direction: column;
       margin-left: 20px;
-      flex-grow: 3;
+      flex: 0 1 250px;
+      white-space: nowrap;
+      overflow: hidden;
     }
     .icon {
       display: flex;
       justify-content: space-around;
-      flex-grow: 1;
+      flex: 1;
     }
+  }
+}
+
+.fixed {
+  bottom: 0;
+  /* 在 H5 模式下将会编译成 margin-bottom: 50px，在小程序模式下则会忽略 */
+  margin-bottom: taro-tabbar-height;
+}
+
+@keyframes turn {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
   }
 }

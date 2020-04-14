@@ -3,7 +3,6 @@ import { View, ScrollView, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './personalized.scss';
 import IconFont from '../iconfont';
-import http from '../../services/api';
 @connect(({ counter }) => ({
   counter
 }))

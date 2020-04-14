@@ -47,13 +47,17 @@ class Index extends Component {
         id: val.id,
         timestamp: new Date()
       });
+      let arr = data.data.playlist.trackIds.map((r) => r.id).join(',');
       let track = await http.get('song/url', {
-        id: data.data.playlist.trackIds.map((r) => r.id).join(','),
+        id: arr,
         timestamp: new Date()
       });
       //addPlayList addSongUrl
       this.props.addRedux(data.data, 'addPlayList');
-      this.props.addRedux(track.data.data, 'addSongUrl');
+      this.props.addRedux(
+        arr.split(',').map((r) => track.data.data.filter((n) => Number(r) === Number(n.id))[0]),
+        'addSongUrl'
+      );
     }
   };
   render() {

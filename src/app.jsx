@@ -9,7 +9,7 @@ import './app.scss';
 // if (process.env.NODE_ENV !== 'production' && process.env.TARO_ENV === 'h5')  {
 //   require('nerv-devtools')
 // }
-const store = configStore();
+const store = configStore;
 class App extends Component {
   componentDidMount() {}
 

@@ -5,6 +5,7 @@ import UserHeader from '../../components/header/userHeader';
 import http from '../../services/api';
 import './me.scss';
 import moment from '../../common/js/moment';
+import Play from '../../components/play/index';
 export default class User extends Component {
   config = {
     navigationBarTitleText: '账号'
@@ -159,6 +160,7 @@ export default class User extends Component {
         ) : (
           ''
         )}
+        <Play></Play>
       </View>
     );
   }
