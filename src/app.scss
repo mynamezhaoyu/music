@@ -56,6 +56,15 @@ page {
     }
   }
 }
+.playatfloatlayout.at-float-layout {
+  .layout-body {
+    padding: 0;
+  }
+  .layout {
+    /* 在 H5 模式下将会编译成 margin-bottom: 50px，在小程序模式下则会忽略 */
+    margin-bottom: taro-tabbar-height;
+  }
+}
 .theme-button {
   background-color: $bg-theme-color;
   border-color: $bg-theme-color;

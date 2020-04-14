@@ -1,9 +1,10 @@
-import { ADDBANNER, ADDPERSONALIZED, ADDPLAYLIST, ADDSONGURL } from '../constants/counter';
+import { ADDBANNER, ADDPERSONALIZED, ADDPLAYLIST, ADDSONGURL, ADDPLAYNUM } from '../constants/counter';
 const INITIAL_STATE = {
   banner: [], // banners 数据
   personalized: [], // 推荐歌单 数据
   playList: [], // 点击歌单数据
-  songUrl: [] // 详细歌单url数据
+  songUrl: [], // 详细歌单url数据
+  playnum: 0 // 当前播放
 };
 
 export default function counter(state = INITIAL_STATE, action) {
@@ -27,6 +28,11 @@ export default function counter(state = INITIAL_STATE, action) {
       return {
         ...state,
         songUrl: action.data
+      };
+    case ADDPLAYNUM:
+      return {
+        ...state,
+        playnum: action.data
       };
     default:
       return state;

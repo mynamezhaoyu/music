@@ -1,6 +1,6 @@
 Component({
   properties: {
-    // xiayishou5 | shangyishou5 | zanting | bofang1
+    // genduo | liebiao | xiayishou5 | shangyishou5 | zanting | bofang1
     name: {
       type: String,
     },
