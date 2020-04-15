@@ -5,7 +5,7 @@ import UserHeader from '../../components/header/userHeader';
 import http from '../../services/api';
 import './me.scss';
 import moment from '../../common/js/moment';
-import Play from '../../components/play/index';
+import Box from '../../components/box/index';
 export default class User extends Component {
   config = {
     navigationBarTitleText: '账号'
@@ -123,44 +123,45 @@ export default class User extends Component {
     const { userDetail } = this.state;
     return (
       <View className="user">
-        <UserHeader></UserHeader>
-        {!Object.keys(userDetail).length && (
-          <View className="login">
-            <View className="login-title">手机电脑多段同步，尽享海量高品质音乐</View>
-            <AtButton type="primary" size="small" circle className="login-button theme-button" onClick={this.fun.login.bind(this)}>
-              立即登录
-            </AtButton>
-          </View>
-        )}
-        {Object.keys(userDetail).length ? (
-          <View className="info">
-            <View className="header">
-              <View className="box">
-                <Image src={userDetail.profile.avatarUrl} mode="widthFix" className="user-img"></Image>
-                <View className="name">
-                  <View>{userDetail.profile.nickname}</View>
-                  <View className="level">Lv.{userDetail.level}</View>
-                </View>
-              </View>
-              <AtButton
-                type="primary"
-                size="small"
-                circle
-                className="theme-button m-0"
-                onClick={this.fun.signin.bind(this)}
-                disabled={this.state.singinDisabled}
-              >
-                签到
+        <Box>
+          <UserHeader></UserHeader>
+          {!Object.keys(userDetail).length && (
+            <View className="login">
+              <View className="login-title">手机电脑多段同步，尽享海量高品质音乐</View>
+              <AtButton type="primary" size="small" circle className="login-button theme-button" onClick={this.fun.login.bind(this)}>
+                立即登录
               </AtButton>
             </View>
-            <AtButton type="primary" size="small" circle className="theme-button logout" onClick={this.fun.logout.bind(this)}>
-              退出登录
-            </AtButton>
-          </View>
-        ) : (
-          ''
-        )}
-        <Play></Play>
+          )}
+          {Object.keys(userDetail).length ? (
+            <View className="info">
+              <View className="header">
+                <View className="box">
+                  <Image src={userDetail.profile.avatarUrl} mode="widthFix" className="user-img"></Image>
+                  <View className="name">
+                    <View>{userDetail.profile.nickname}</View>
+                    <View className="level">Lv.{userDetail.level}</View>
+                  </View>
+                </View>
+                <AtButton
+                  type="primary"
+                  size="small"
+                  circle
+                  className="theme-button m-0"
+                  onClick={this.fun.signin.bind(this)}
+                  disabled={this.state.singinDisabled}
+                >
+                  签到
+                </AtButton>
+              </View>
+              <AtButton type="primary" size="small" circle className="theme-button logout" onClick={this.fun.logout.bind(this)}>
+                退出登录
+              </AtButton>
+            </View>
+          ) : (
+            ''
+          )}
+        </Box>
       </View>
     );
   }

@@ -2,11 +2,11 @@ import Taro, { Component } from '@tarojs/taro';
 import { View } from '@tarojs/components';
 import Header from '../../components/header/header';
 import Personalized from '../../components/personalized/personalized';
-import Play from '../../components/play/index';
 import './index.scss';
 import http from '../../services/api';
 import { connect } from '@tarojs/redux';
 import { addRedux } from '../../actions/counter';
+import Box from '../../components/box/index';
 @connect(
   ({ counter }) => ({
     counter
@@ -21,6 +21,7 @@ class Index extends Component {
   config = {
     navigationBarTitleText: '首页'
   };
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -31,6 +32,7 @@ class Index extends Component {
   }
   fun = {
     getData: () => {
+      // 请求banner数据
       http
         .post('banner', {
           type: 2
@@ -38,6 +40,7 @@ class Index extends Component {
         .then((res) => {
           this.props.addRedux(res.data.banners, 'addBanner');
         });
+      // 请求推荐歌单数据
       http.get('personalized?limit=10').then((res) => {
         this.props.addRedux(res.data.result, 'addPersonalized');
       });
@@ -54,18 +57,20 @@ class Index extends Component {
       });
       //addPlayList addSongUrl
       this.props.addRedux(data.data, 'addPlayList');
-      this.props.addRedux(
-        arr.split(',').map((r) => track.data.data.filter((n) => Number(r) === Number(n.id))[0]),
-        'addSongUrl'
-      );
+      let songUrlData = arr.split(',').map((r) => track.data.data.filter((n) => Number(r) === Number(n.id))[0]);
+      this.props.addRedux(songUrlData, 'addSongUrl');
+      let num = songUrlData.findIndex((r) => r.url);
+      await this.props.addRedux(num, 'addPlayNum');
+      Taro.eventCenter.trigger('playMusic');
     }
   };
   render() {
     return (
       <View className="index">
-        <Header></Header>
-        <Personalized handleClickplay={this.fun.handleClickplay.bind(this)}></Personalized>
-        <Play></Play>
+        <Box>
+          <Header></Header>
+          <Personalized handleClickplay={this.fun.handleClickplay.bind(this)}></Personalized>
+        </Box>
       </View>
     );
   }
