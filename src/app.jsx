@@ -11,7 +11,11 @@ import './app.scss';
 // }
 const store = configStore;
 class App extends Component {
-  componentDidMount() {}
+  componentDidMount() {
+    Taro.getSystemInfo({}).then((res) => {
+      Taro.$navBarMarginTop = res.statusBarHeight || 0;
+    });
+  }
 
   componentDidShow() {}
 
@@ -20,7 +24,7 @@ class App extends Component {
   componentDidCatchError() {}
 
   config = {
-    pages: ['pages/index/index', 'pages/me/me', 'pages/video/video', 'pages/bbs/bbs', 'pages/login/login'],
+    pages: [ 'pages/index/index', 'pages/me/me', 'pages/video/video', 'pages/bbs/bbs', 'pages/detail/index','pages/login/login'],
     window: {
       navigationBarBackgroundColor: '#242424',
       navigationBarTitleText: '轻云音乐',

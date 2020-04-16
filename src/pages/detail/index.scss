@@ -1,0 +1,65 @@
+.detail {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  .navbar {
+    position: fixed;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    height: 90px;
+    z-index: 10;
+    .leftIcon {
+      flex: 1;
+      z-index: 11;
+    }
+    .header {
+      height: 100%;
+      flex: 5;
+      text-align: center;
+      .title {
+        font-size: 30px;
+        line-height: 60px;
+      }
+      .singer {
+        font-size: 18px;
+        line-height: 18px;
+      }
+    }
+    .rightIcon {
+      flex: 1;
+    }
+  }
+  .box {
+    flex: 1;
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+    box-sizing: border-box;
+    .play {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 550px;
+      height: 550px;
+      margin-top: 200px;
+      border-radius: 50%;
+      border: 20px solid #3c3636;
+    }
+    .aag {
+      position: absolute;
+      top: 110px;
+      left: 50%;
+      margin-left: -50px;
+      height: 300px;
+      width: 200px;
+      z-index: 99;
+      transition: 1s;
+      transform-origin: 0 top 0;
+      &:hover {
+        transform: rotate(-20deg);
+      }
+    }
+  }
+}

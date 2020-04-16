@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text } from '@tarojs/components';
+import { View, Image, Text, ScrollView } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import IconFont from '../iconfont';
 import './index.scss';
@@ -19,9 +19,9 @@ class Play extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      type: true,
       isOpened: false,
-      floatLayout: false
+      floatLayout: false,
+      num: 1
     };
   }
   componentDidMount() {
@@ -33,7 +33,8 @@ class Play extends Component {
   // 初始化播放
   async play() {
     this.setState({
-      floatLayout: false
+      floatLayout: false,
+      num: 1
     });
     let { playnum, songUrl, playList } = this.props.counter;
     // 因为微信小程序具备后台播放的功能。所以配置的参数不同
@@ -62,16 +63,12 @@ class Play extends Component {
   // 暂停
   pause() {
     this.props.counter.audioContext.pause();
-    this.setState({
-      type: false
-    });
+    this.props.addRedux(false, 'addMusicType');
   }
   // 开始
   begin() {
     this.props.counter.audioContext.play();
-    this.setState({
-      type: true
-    });
+    this.props.addRedux(true, 'addMusicType');
   }
   // 上一首
   up() {
@@ -143,16 +140,55 @@ class Play extends Component {
           }
     );
   }
+  onScrollToLower() {
+    if (this.state.num * 10 < this.props.counter.playList.playlist.tracks.length) {
+      this.setState({
+        num: this.state.num + 1
+      });
+    }
+  }
+  changePlaynum(i) {
+    let { songUrl, playList } = this.props.counter;
+    let musicData = {};
+    this.props.addRedux(i, 'addPlayNum');
+    let _obj = playList.playlist.tracks[i];
+    musicData =
+      process.env.TARO_ENV === 'weapp'
+        ? {
+            title: _obj.name,
+            epname: _obj.ar[0].name,
+            singer: _obj.al.name,
+            coverImgUrl: _obj.al.picUrl,
+            src: songUrl[i].url
+          }
+        : {
+            src: songUrl[i].url
+          };
+    this.props.addRedux(musicData, 'updateAudioContext');
+  }
+  onClickImg() {
+    Taro.eventCenter.trigger('boxTrigger');
+    Taro.navigateTo({
+      url: '/pages/detail/index'
+    });
+  }
+  getTime(i) {
+    let { playList } = this.props.counter;
+    let time = playList.playlist.tracks[i].dt / 60000;
+    let arr = [time - (time % 1), parseInt((time % 1) * 60)];
+    return `${arr[0] < 10 ? '0' + arr[0] : arr[0]}: ${arr[1] < 10 ? '0' + arr[1] : arr[1]}`;
+  }
   render() {
-    let { songUrl, playList, playnum } = this.props.counter;
+    let { songUrl, playList, playnum, musicType } = this.props.counter;
     return (
       <View className="play fixed">
-        {songUrl.length && (
+        {songUrl.length ? (
           <View className="main">
             <Image
+              onClick={this.onClickImg}
               src={playList.playlist.tracks[playnum].al.picUrl}
               mode="widthFix"
-              className={this.state.type ? 'img animation-running' : 'img animation-paused'}
+              className={musicType ? 'img animation-running' : 'img animation-paused'}
             ></Image>
             <View className="info">
               <Text>{playList.playlist.tracks[playnum].name}</Text>
@@ -164,7 +200,7 @@ class Play extends Component {
               <View onClick={this.up.bind(this, -1)}>
                 <IconFont name="shangyishou5" size="60" />
               </View>
-              {this.state.type ? (
+              {musicType ? (
                 <View onClick={this.pause.bind(this)}>
                   <IconFont name="zanting" size="60" />
                 </View>
@@ -185,18 +221,39 @@ class Play extends Component {
                 <AtFloatLayout
                   isOpened={this.state.isOpened}
                   className="playatfloatlayout"
-                  title="列表"
+                  title={'共' + songUrl.length + ` 当前${playnum + 1} 播放列表`}
                   onClose={this.handleChange.bind(this, false)}
                 >
-                  <AtList>
-                    {playList.playlist.tracks.map((r, i) => {
-                      return <AtListItem thumb={r.al.picUrl} title={r.name + ' - ' + r.ar[0].name} key={r.name + i} extraText={r.al.name} />;
-                    })}
-                  </AtList>
+                  <ScrollView
+                    scrollY
+                    scrollWithAnimation
+                    scrollAnchoring
+                    onScrollToLower={this.onScrollToLower.bind(this)}
+                    style={{ height: ['300px'] }}
+                  >
+                    <AtList>
+                      {playList.playlist.tracks.map((r, i) => {
+                        if (i < this.state.num * 10)
+                          return (
+                            <AtListItem
+                              className={i === playnum ? 'listActive' : ''}
+                              thumb={r.al.picUrl}
+                              disabled={songUrl[i].url ? false : true}
+                              title={r.name + ' - ' + r.ar[0].name}
+                              key={r.name + i}
+                              extraText={this.getTime(i)}
+                              onClick={this.changePlaynum.bind(this, i)}
+                            />
+                          );
+                      })}
+                    </AtList>
+                  </ScrollView>
                 </AtFloatLayout>
               )}
             </View>
           </View>
+        ) : (
+          ''
         )}
       </View>
     );
