@@ -24,7 +24,7 @@ class App extends Component {
   componentDidCatchError() {}
 
   config = {
-    pages: [ 'pages/index/index', 'pages/me/me', 'pages/video/video', 'pages/bbs/bbs', 'pages/detail/index','pages/login/login'],
+    pages: ['pages/index/index', 'pages/me/me', 'pages/video/video', 'pages/bbs/bbs', 'pages/detail/index', 'pages/login/login'],
     window: {
       navigationBarBackgroundColor: '#242424',
       navigationBarTitleText: '轻云音乐',

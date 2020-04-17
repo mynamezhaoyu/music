@@ -58,6 +58,7 @@ class Play extends Component {
     // 监听播放完了，接着放下一首
     this.props.counter.audioContext.onEnded(() => {
       this.down();
+      Taro.eventCenter.trigger('down');
     });
   }
   // 暂停
@@ -198,7 +199,7 @@ class Play extends Component {
             </View>
             <View className="icon">
               <View onClick={this.up.bind(this, -1)}>
-                <IconFont name="shangyishou5" size="60" />
+                <IconFont name="up" size="60" />
               </View>
               {musicType ? (
                 <View onClick={this.pause.bind(this)}>
@@ -206,14 +207,14 @@ class Play extends Component {
                 </View>
               ) : (
                 <View onClick={this.begin.bind(this)}>
-                  <IconFont name="bofang1" size="60" />
+                  <IconFont name="bofang" size="60" />
                 </View>
               )}
               <View onClick={this.down.bind(this, 1)}>
-                <IconFont name="xiayishou5" size="60" />
+                <IconFont name="down" size="60" />
               </View>
               <View onClick={this.handleChange.bind(this, true)}>
-                <IconFont name="genduo" size="60" />
+                <IconFont name="SanMiAppglyphico12" size="60" />
               </View>
             </View>
             <View>
@@ -221,7 +222,7 @@ class Play extends Component {
                 <AtFloatLayout
                   isOpened={this.state.isOpened}
                   className="playatfloatlayout"
-                  title={'共' + songUrl.length + ` 当前${playnum + 1} 播放列表`}
+                  title={`当前播放 ${songUrl.length}`}
                   onClose={this.handleChange.bind(this, false)}
                 >
                   <ScrollView

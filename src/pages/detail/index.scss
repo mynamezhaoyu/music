@@ -2,6 +2,7 @@
   height: 100%;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   .navbar {
     position: fixed;
     width: 100%;
@@ -40,16 +41,16 @@
     .play {
       position: absolute;
       left: 50%;
+      top: 25%;
       transform: translateX(-50%);
       width: 550px;
       height: 550px;
-      margin-top: 200px;
       border-radius: 50%;
       border: 20px solid #3c3636;
     }
     .aag {
       position: absolute;
-      top: 110px;
+      top: 12%;
       left: 50%;
       margin-left: -50px;
       height: 300px;
@@ -57,9 +58,25 @@
       z-index: 99;
       transition: 1s;
       transform-origin: 0 top 0;
+      transform: rotate(-5deg);
       &:hover {
-        transform: rotate(-20deg);
+        transform: rotate(-30deg);
       }
     }
+  }
+  .scroolX {
+    display: flex;
+    align-items: center;
+    margin: 0 20px;
+    .slider {
+      flex: 1;
+      z-index: 999;
+    }
+  }
+  .footer {
+    display: flex;
+    height: 150px;
+    justify-content: space-around;
+    align-items: center;
   }
 }

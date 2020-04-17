@@ -11,7 +11,6 @@ page {
   height: 100%;
   color: #fff;
   background-color: $bg-color;
-  
 }
 .none {
   display: none;
@@ -57,15 +56,6 @@ page {
     }
   }
 }
-.playatfloatlayout.at-float-layout {
-  .layout-body {
-    padding: 0;
-  }
-  .layout {
-    /* 在 H5 模式下将会编译成 margin-bottom: 50px，在小程序模式下则会忽略 */
-    margin-bottom: taro-tabbar-height;
-  }
-}
 .theme-button {
   background-color: $bg-theme-color;
   border-color: $bg-theme-color;
@@ -78,8 +68,47 @@ page {
 }
 
 .listActive {
-  background-color: aliceblue
+  background-color: #5c787b;
 }
 .taro_page {
   height: 100% !important;
+}
+.layout {
+  border-radius: 20px;
+  background-color: $bg-light-color;
+  /*  #ifdef h5  */
+  margin-bottom: calc(18px + #{taro-tabbar-height});
+  /*  #endif  */
+  /*  #ifdef weapp  */
+  margin-bottom: 18px;
+  /*  #endif  */
+  width: 96%;
+  margin-left: 2%;
+  .layout-header {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: $bg-light-color;
+    .layout-header__title {
+      color: #fff;
+    }
+  }
+  .layout-body {
+    padding: 0;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border: 1px solid $bg-light-color;
+    overflow: hidden;
+    .at-list {
+      background-color: $bg-light-color;
+      .at-list__item {
+        color: #fff;
+        .item-extra__info {
+          color: #fff;
+        }
+        &::after {
+          border-bottom-color: $bg-color;
+        }
+      }
+    }
+  }
 }

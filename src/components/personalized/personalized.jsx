@@ -22,7 +22,7 @@ class Personalized extends Component {
                 <View className="item">
                   <Image src={r.picUrl} className="img"></Image>
                   <View className="icon" onClick={this.play.bind(this, r)}>
-                    <IconFont name="bofang1" size="40" />
+                    <IconFont name="bofang" size="40" />
                   </View>
                   <View className="playCount">{(r.playCount + '').length > 5 ? (r.playCount + ' ').slice(0, 3) + ' 万' : r.playCount}</View>
                 </View>
