@@ -24,12 +24,12 @@ class Play extends Component {
       num: 1
     };
   }
-  componentDidMount() {
+  componentWillMount() {
     Taro.eventCenter.on('playMusic', () => {
       this.play();
     });
   }
-  componentDidShow() {}
+
   // 初始化播放
   async play() {
     this.setState({
@@ -46,12 +46,12 @@ class Play extends Component {
         epname: _obj.ar[0].name,
         singer: _obj.al.name,
         coverImgUrl: _obj.al.picUrl,
-        src: songUrl[playnum].url
+        src: this.getUrl()
       };
     } else {
       musicData = {
         autoplay: true,
-        src: songUrl[playnum].url
+        src: this.getUrl()
       };
     }
     await this.props.addRedux(musicData, 'updateAudioContext');
@@ -60,6 +60,20 @@ class Play extends Component {
       this.down();
       Taro.eventCenter.trigger('down');
     });
+    if (process.env.TARO_ENV === 'h5') {
+      let time = 0;
+      this.props.counter.audioContext.onStop(() => {
+        this.props.counter.audioContext.play();
+        this.props.counter.audioContext.seek(this.time + 0.2);
+      });
+      this.props.counter.audioContext.onTimeUpdate(() => {
+        this.time = this.props.counter.audioContext.currentTime;
+      });
+    }
+  }
+  getUrl(index) {
+    let { playnum, songUrl } = this.props.counter;
+    return `https://music.163.com/song/media/outer/url?id=${songUrl[index ? index : playnum].id}.mp3` || songUrl[index ? index : playnum].url || '';
   }
   // 暂停
   pause() {
@@ -93,12 +107,15 @@ class Play extends Component {
             epname: _obj.ar[0].name,
             singer: _obj.al.name,
             coverImgUrl: _obj.al.picUrl,
-            src: songUrl[index].url
+            src: this.getUrl(index)
           }
         : {
-            src: songUrl[index].url
+            src: this.getUrl(index)
           };
     this.props.addRedux(musicData, 'updateAudioContext');
+    if (!this.props.counter.addMusicType) {
+      this.props.addRedux(true, 'addMusicType');
+    }
   }
   // 下一首
   down() {
@@ -122,12 +139,15 @@ class Play extends Component {
             epname: _obj.ar[0].name,
             singer: _obj.al.name,
             coverImgUrl: _obj.al.picUrl,
-            src: songUrl[index].url
+            src: this.getUrl(index)
           }
         : {
-            src: songUrl[index].url
+            src: this.getUrl(index)
           };
     this.props.addRedux(musicData, 'updateAudioContext');
+    if (!this.props.counter.addMusicType) {
+      this.props.addRedux(true, 'addMusicType');
+    }
   }
   handleChange(val) {
     this.setState(
@@ -160,15 +180,17 @@ class Play extends Component {
             epname: _obj.ar[0].name,
             singer: _obj.al.name,
             coverImgUrl: _obj.al.picUrl,
-            src: songUrl[i].url
+            src: this.getUrl(i)
           }
         : {
-            src: songUrl[i].url
+            src: this.getUrl(i)
           };
     this.props.addRedux(musicData, 'updateAudioContext');
+    if (!this.props.counter.addMusicType) {
+      this.props.addRedux(true, 'addMusicType');
+    }
   }
   onClickImg() {
-    Taro.eventCenter.trigger('boxTrigger');
     Taro.navigateTo({
       url: '/pages/detail/index'
     });

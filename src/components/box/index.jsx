@@ -8,17 +8,15 @@ import Play from '../../components/play/index';
 class Header extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
   componentDidMount() {
     // 整个页面只需要执行一次的时候用这个
   }
-  componentDidShow() {}
   render() {
     return (
       <View className="box">
         {this.props.children}
-        <Play></Play>
+        {process.env.TARO_ENV === 'h5' ? this.props.counter.songUrl.length ? <Play /> : '' : <Play />}
       </View>
     );
   }

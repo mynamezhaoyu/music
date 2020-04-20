@@ -30,13 +30,15 @@ class Detail extends Component {
       time: '00:00'
     };
   }
-  componentDidMount() {
+  componentDidMount() {}
+  componentWillMount() {
+    // 自定义头部，初始化置顶
     this.setState({
       num: Taro.$navBarMarginTop
     });
-    Taro.eventCenter.on('boxTrigger', () => {
-      console.log(1);
-    });
+    // 取消监听一个事件
+    Taro.eventCenter.off('down');
+    // 自动下一首的时候，当前播放时间归零
     Taro.eventCenter.on('down', () => {
       this.setState({
         sliderValue: 0
@@ -86,12 +88,19 @@ class Detail extends Component {
             epname: _obj.ar[0].name,
             singer: _obj.al.name,
             coverImgUrl: _obj.al.picUrl,
-            src: songUrl[index].url
+            src: this.getUrl(index)
           }
         : {
-            src: songUrl[index].url
+            src: this.getUrl(index)
           };
     this.props.addRedux(musicData, 'updateAudioContext');
+    if (!this.props.counter.addMusicType) {
+      this.props.addRedux(true, 'addMusicType');
+    }
+  }
+  getUrl(index) {
+    let { playnum, songUrl, playList } = this.props.counter;
+    return songUrl[index ? index : playnum].url || `https://music.163.com/song/media/outer/url?id=${songUrl[index ? index : playnum].id}.mp3`;
   }
   // 下一首
   down() {
@@ -118,24 +127,22 @@ class Detail extends Component {
             epname: _obj.ar[0].name,
             singer: _obj.al.name,
             coverImgUrl: _obj.al.picUrl,
-            src: songUrl[index].url
+            src: this.getUrl(index)
           }
         : {
-            src: songUrl[index].url
+            src: this.getUrl(index)
           };
     this.props.addRedux(musicData, 'updateAudioContext');
+    if (!this.props.counter.addMusicType) {
+      this.props.addRedux(true, 'addMusicType');
+    }
   }
   getTime(val) {
     let arr = [val - (val % 1), parseInt((val % 1) * 60)];
     return `${arr[0] < 10 ? '0' + arr[0] : arr[0]}: ${arr[1] < 10 ? '0' + arr[1] : arr[1]}`;
   }
   sliderChange(val) {
-    let { playList, playnum } = this.props.counter;
     let value = val.value;
-    let num = playList.playlist.tracks[playnum].dt;
-    if (value > parseInt(num / 1000) - 5) {
-      value = parseInt(num / 1000) - 5;
-    }
     this.setState({
       sliderValue: value,
       time: this.getTime(value / 60)
@@ -143,7 +150,7 @@ class Detail extends Component {
     this.props.counter.audioContext.seek(value);
   }
   render() {
-    let { songUrl, playList, playnum, musicType } = this.props.counter;
+    let { playList, playnum, musicType } = this.props.counter;
     let data = playList.playlist && playList.playlist.tracks[playnum];
     return (
       <View className="detail" style={{ paddingTop: [`${this.state.num}PX`] }}>
@@ -161,8 +168,9 @@ class Detail extends Component {
           <View className="rightIcon"></View>
         </View>
         <View className="box">
-          <Image src={require('../../common/img/aag.png')} className="aag" />
+          <Image src={require('../../common/img/aag.png')} className="aag" className={musicType ? 'aag aag-running' : 'aag aag-paused'} />
           <Image src={require('../../common/img/play.png')} className="play" />
+          <Image src={data.al.picUrl} className={musicType ? 'current-img animation-running' : 'current-img animation-paused'} />
         </View>
         <View className="footer">
           <IconFont name="SanMiAppglyphico10" size="50" />
