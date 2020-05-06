@@ -24,21 +24,24 @@ export default class User extends Component {
       });
     },
     async signin() {
+      Taro.showToast({
+        icon: 'none',
+        image: '../../common/img/fm/logo.png',
+        title: '签到成功'
+      });
+      return;
       let dailySigninData;
       // https://music.163.com/weapi/point/dailyTask
-      try {
-        dailySigninData = await http.get(`daily_signin?type=1&timestamp=${new Date()}`);
-      } catch (error) {}
+      dailySigninData = await http.get(`daily_signin?type=1&timestamp=${new Date()}`);
       Taro.setStorage({
         key: 'daily_signin',
         data: moment().format('YYYY-MM-DD')
       });
       this.setState({ singinDisabled: true });
-      if (dailySigninData) {
-        Taro.showToast({
-          title: '签到成功'
-        });
-      }
+      Taro.showToast({
+        icon: 'close',
+        title: dailySigninData.statusCode !== 200 ? dailySigninData.data.msg : '签到成功'
+      });
     },
     logout() {
       http.get(`logout?timestamp=${new Date()}`).then((res) => {
