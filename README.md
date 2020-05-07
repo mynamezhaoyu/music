@@ -10,12 +10,12 @@
 
 ## 图片展示
 
-<img src="http://q9wga56zc.bkt.clouddn.com/music_1.jpg?e=1588842774&token=8jpX2y4G8cxgGIM9WZdO8m1uUijBmXEcDW89ekL9:MbHBW2OzGPcXyPDeBqo0vpiNV18=&attname=" style="width:400px" />
+<img src="http://q9wga56zc.bkt.clouddn.com/music_1.jpg?e=1588842774&token=8jpX2y4G8cxgGIM9WZdO8m1uUijBmXEcDW89ekL9:MbHBW2OzGPcXyPDeBqo0vpiNV18=&attname=" width="400" />
 <br>
 <br>
 
-<img src="http://q9wga56zc.bkt.clouddn.com/music_2.jpg?e=1588842774&token=8jpX2y4G8cxgGIM9WZdO8m1uUijBmXEcDW89ekL9:kPWeHqERxhiqyayFzna36uJAup4=&attname=" style="width:400px" />
+<img src="http://q9wga56zc.bkt.clouddn.com/music_2.jpg?e=1588842774&token=8jpX2y4G8cxgGIM9WZdO8m1uUijBmXEcDW89ekL9:kPWeHqERxhiqyayFzna36uJAup4=&attname=" width="400" />
 <br>
 <br>
 
-<img src="http://q9wga56zc.bkt.clouddn.com/music_3.jpg?e=1588842774&token=8jpX2y4G8cxgGIM9WZdO8m1uUijBmXEcDW89ekL9:oGsk-2zMIho4A9g-ofAJldBZ1bA=&attname=" style="width:400px" />
+<img src="http://q9wga56zc.bkt.clouddn.com/music_3.jpg?e=1588842774&token=8jpX2y4G8cxgGIM9WZdO8m1uUijBmXEcDW89ekL9:oGsk-2zMIho4A9g-ofAJldBZ1bA=&attname=" width="400" />
