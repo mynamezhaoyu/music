@@ -86,7 +86,7 @@ class Play extends Component {
     this.props.addRedux(true, 'addMusicType');
   }
   // 上一首
-  up() {
+  async up() {
     let { playnum, songUrl, playList } = this.props.counter;
     let index = playnum - 1;
     let musicData = {};
@@ -94,7 +94,7 @@ class Play extends Component {
     if (index < 0) {
       index = songUrl.length - 1;
     }
-    this.props.addRedux(index, 'addPlayNum');
+    await this.props.addRedux(index, 'addPlayNum');
     if (!songUrl[index] || songUrl[index].url === null || !songUrl[index].url) {
       this.up();
       return;
@@ -118,7 +118,7 @@ class Play extends Component {
     }
   }
   // 下一首
-  down() {
+  async down() {
     let { playnum, songUrl, playList } = this.props.counter;
     let index = playnum + 1;
     let musicData = {};
@@ -126,7 +126,7 @@ class Play extends Component {
     if (index >= songUrl.length) {
       index = 0;
     }
-    this.props.addRedux(index, 'addPlayNum');
+    await this.props.addRedux(index, 'addPlayNum');
     if (!songUrl[index] || songUrl[index].url === null || !songUrl[index].url) {
       this.down();
       return;

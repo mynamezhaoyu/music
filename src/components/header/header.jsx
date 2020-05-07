@@ -19,7 +19,7 @@ class Header extends Component {
   componentDidShow() {}
   render() {
     return (
-      <View className="header">
+      <View className="_header">
         <AtSearchBar actionName="取消" value={this.state.inputVal} className="header-search" />
         <View className="banner">
           <Swiper indicatorColor="#fff" indicatorActiveColor="red" circular={true} indicatorDots autoplay className="header-swiper">

@@ -68,7 +68,7 @@ class Detail extends Component {
     this.autoTime(false);
   }
   // 上一首
-  up() {
+  async up() {
     this.autoTime();
     this.setState({
       sliderValue: 0,
@@ -81,7 +81,7 @@ class Detail extends Component {
     if (index < 0) {
       index = songUrl.length - 1;
     }
-    this.props.addRedux(index, 'addPlayNum');
+    await this.props.addRedux(index, 'addPlayNum');
     if (!songUrl[index] || songUrl[index].url === null || !songUrl[index].url) {
       this.up();
       return;
@@ -109,7 +109,7 @@ class Detail extends Component {
     return songUrl[index ? index : playnum].url || `https://music.163.com/song/media/outer/url?id=${songUrl[index ? index : playnum].id}.mp3`;
   }
   // 下一首
-  down() {
+  async down() {
     this.autoTime();
     this.setState({
       sliderValue: 0,
@@ -122,7 +122,7 @@ class Detail extends Component {
     if (index >= songUrl.length) {
       index = 0;
     }
-    this.props.addRedux(index, 'addPlayNum');
+    await this.props.addRedux(index, 'addPlayNum');
     if (!songUrl[index] || songUrl[index].url === null || !songUrl[index].url) {
       this.down();
       return;
@@ -164,7 +164,11 @@ class Detail extends Component {
   newTime = 0;
   autoTime(bu = true) {
     clearInterval(this.trace);
-     this.newTime = bu ? 0 : parseInt(this.props.counter.audioContext.currentTime);
+    this.newTime = bu ? 0 : parseInt(this.props.counter.audioContext.currentTime);
+    this.setState({
+      sliderValue: this.newTime,
+      time: this.getTime(this.newTime)
+    });
     this.trace = setInterval(() => {
       this.newTime++;
       this.setState({
@@ -178,6 +182,7 @@ class Detail extends Component {
     let data = playList.playlist && playList.playlist.tracks[playnum];
     return (
       <View className="detail" style={{ paddingTop: [`${this.state.num}PX`] }}>
+        <Image className="song__bg" src={data.al.picUrl} />
         <View className="navbar">
           <View onClick={this.goback.bind(this)} className="leftIcon">
             <AtIcon value="chevron-left" size="30" color="#fff"></AtIcon>
@@ -192,9 +197,11 @@ class Detail extends Component {
           <View className="rightIcon"></View>
         </View>
         <View className="box">
-          <Image src={require('../../common/img/aag.png')} className="aag" className={musicType ? 'aag aag-running' : 'aag aag-paused'} />
-          <Image src={require('../../common/img/play.png')} className="play" />
-          <Image src={data.al.picUrl} className={musicType ? 'current-img animation-running' : 'current-img animation-paused'} />
+          <Image src={require('../../common/img/aag.png')} className={`aag ${musicType ? 'aag-running' : 'aag-paused'}`} />
+          <View className="play-parent">
+            <Image src={require('../../common/img/play.png')} className="play" />
+          </View>
+          <Image src={data.al.picUrl} className={`current-img ${musicType ? 'animation-running' : 'animation-paused'}`} />
         </View>
         <View className="footer">
           <IconFont name="SanMiAppglyphico10" size="50" />
