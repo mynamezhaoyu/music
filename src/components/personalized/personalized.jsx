@@ -3,12 +3,32 @@ import { View, ScrollView, Image } from '@tarojs/components';
 import { connect } from '@tarojs/redux';
 import './personalized.scss';
 import IconFont from '../iconfont';
-@connect(({ counter }) => ({
-  counter
-}))
+import http from '../../services/api';
+import { addRedux } from '../../actions/counter';
+
+@connect(
+  ({ counter }) => ({
+    counter
+  }),
+  (dispatch) => ({
+    addRedux(val, type) {
+      dispatch(addRedux(val, type));
+    }
+  })
+)
 class Personalized extends Component {
   async play(val) {
     this.props.handleClickplay(val)
+  }
+  async playList(val) {
+    let data = await http.get('playlist/detail', {
+      id: val.id,
+      timestamp: new Date()
+    });
+    this.props.addRedux(data.data, 'addPlayList');
+    Taro.navigateTo({
+      url: '/pages/list/index'
+    });
   }
   render() {
     return (
@@ -20,7 +40,7 @@ class Personalized extends Component {
             return (
               <View className="list" key={r.name + i}>
                 <View className="item">
-                  <Image src={r.picUrl} className="img"></Image>
+                  <Image src={r.picUrl} className="img" onClick={this.playList.bind(this, r)}></Image>
                   <View className="icon" onClick={this.play.bind(this, r)}>
                     <IconFont name="bofang" size="40" />
                   </View>

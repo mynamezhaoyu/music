@@ -112,3 +112,6 @@ page {
     }
   }
 }
+.swiper-slide { // 解决h5 width 100%被冲掉的问题!
+  width: 100% !important;
+}
