@@ -38,7 +38,8 @@ export default function counter(state = INITIAL_STATE, action) {
         playnum: action.data
       };
     case UPDATEAUDIOCONTEXT:
-      Object.assign(state.audioContext, action.data);
+      let data = state.audioContext;
+      Object.assign(data, action.data);
       return state;
     case ADDMUSICTYPE:
       return {

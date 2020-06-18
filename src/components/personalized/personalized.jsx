@@ -4,6 +4,7 @@ import { connect } from "@tarojs/redux";
 import "./personalized.scss";
 import IconFont from "../iconfont";
 import http from "../../services/api";
+import common from "../../common/js/common";
 import { addRedux } from "../../actions/counter";
 
 @connect(
@@ -21,14 +22,16 @@ class Personalized extends Component {
     this.props.handleClickplay(val);
   }
   async playList(val) {
-    let data = await http.get("playlist/detail", {
-      id: val.id,
-      timestamp: new Date()
-    });
-    this.props.addRedux(data.data, "addPlayList");
     Taro.navigateTo({
       url: "/pages/list/index"
     });
+    let { playList } = this.props.counter;
+    if (playList.playlist && playList.playlist.id === val.id) return;
+    let arr = await common.play(val.id);
+    // 存到redux
+    this.props.addRedux(arr[0], "addPlayList");
+    this.props.addRedux(arr[1], "addSongUrl");
+    await this.props.addRedux(arr[2], "addPlayNum");
   }
   render() {
     return (
@@ -54,7 +57,7 @@ class Personalized extends Component {
                   </View>
                   <View className="playCount">
                     {(r.playCount + "").length > 5
-                      ? (r.playCount + " ").slice(0, 3) + " 万"
+                      ? (r.playCount + " ").slice(0, -5) + " 万"
                       : r.playCount}
                   </View>
                 </View>

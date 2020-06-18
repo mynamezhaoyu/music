@@ -37,12 +37,18 @@
     padding: 60px 20px;
     .info-top {
       display: flex;
+      position: relative;
       .img {
         height: 260px;
         width: 260px;
         border-radius: 10px;
         flex-basis: 260px;
         flex-shrink: 0;
+      }
+      .playCount {
+        position: absolute;
+        top: 5px;
+        right: calc(100% - 250px);
       }
       .text-area {
         font-size: 30px;
@@ -96,12 +102,48 @@
       }
     }
   }
-  .line-clamp2 {
+  .scrollview {
+    height: 100%;
+  }
+  .song {
+    background-color: $bg-color;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    /* autoprefixer: off */
-    -webkit-box-orient: vertical;
+    border: 1px solid #636363;
+    font-size: 35px;
+    .header {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      .play {
+        display: flex;
+        align-items: center;
+      }
+      .all {
+        margin-left: 25px;
+      }
+      .all-music {
+        font-size: 30px;
+        color: rgb(199, 199, 199);
+        display: inline-block;
+        width: 140px;
+        text-align-last: justify;
+        margin-left: 10px;
+      }
+      .collect {
+      }
+    }
+  }
+  .music-list {
+    .detail {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  .line-clamp2 {
+    @include line-clamp(2);
   }
 }

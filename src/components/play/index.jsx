@@ -36,11 +36,11 @@ class Play extends Component {
       floatLayout: false,
       num: 1
     });
-    let { playnum, songUrl, playList } = this.props.counter;
+    let { playnum, songUrl } = this.props.counter;
     // 因为微信小程序具备后台播放的功能。所以配置的参数不同
     let musicData = {};
     if (process.env.TARO_ENV === 'weapp') {
-      let _obj = playList.playlist.tracks[playnum];
+      let _obj = songUrl[playnum];
       musicData = {
         title: _obj.name,
         epname: _obj.ar[0].name,
@@ -60,6 +60,12 @@ class Play extends Component {
       this.down();
       Taro.eventCenter.trigger('down');
     });
+    // 监听失败看看为啥失败，再解决这个问题
+    this.props.counter.audioContext.onError((err) => {
+      console.log('你TM的为啥失败', err);
+      this.down();
+      Taro.eventCenter.trigger('down');
+    });
     if (process.env.TARO_ENV === 'h5') {
       let time = 0;
       this.props.counter.audioContext.onStop(() => {
@@ -73,7 +79,7 @@ class Play extends Component {
   }
   getUrl(index) {
     let { playnum, songUrl } = this.props.counter;
-    return `https://music.163.com/song/media/outer/url?id=${songUrl[index ? index : playnum].id}.mp3` || songUrl[index ? index : playnum].url || '';
+    return songUrl[index ? index : playnum].url || `https://music.163.com/song/media/outer/url?id=${songUrl[index ? index : playnum].id}.mp3`;
   }
   // 暂停
   pause() {
@@ -87,7 +93,7 @@ class Play extends Component {
   }
   // 上一首
   async up() {
-    let { playnum, songUrl, playList } = this.props.counter;
+    let { playnum, songUrl } = this.props.counter;
     let index = playnum - 1;
     let musicData = {};
     // 重置
@@ -99,7 +105,7 @@ class Play extends Component {
       this.up();
       return;
     }
-    let _obj = playList.playlist.tracks[index];
+    let _obj = songUrl[index];
     musicData =
       process.env.TARO_ENV === 'weapp'
         ? {
@@ -119,7 +125,7 @@ class Play extends Component {
   }
   // 下一首
   async down() {
-    let { playnum, songUrl, playList } = this.props.counter;
+    let { playnum, songUrl } = this.props.counter;
     let index = playnum + 1;
     let musicData = {};
     // 重置
@@ -131,7 +137,7 @@ class Play extends Component {
       this.down();
       return;
     }
-    let _obj = playList.playlist.tracks[index];
+    let _obj = songUrl[index];
     musicData =
       process.env.TARO_ENV === 'weapp'
         ? {
@@ -162,17 +168,17 @@ class Play extends Component {
     );
   }
   onScrollToLower() {
-    if (this.state.num * 10 < this.props.counter.playList.playlist.tracks.length) {
+    if (this.state.num * 10 < this.props.counter.songUrl.length) {
       this.setState({
         num: this.state.num + 1
       });
     }
   }
   changePlaynum(i) {
-    let { songUrl, playList } = this.props.counter;
+    let { songUrl } = this.props.counter;
     let musicData = {};
     this.props.addRedux(i, 'addPlayNum');
-    let _obj = playList.playlist.tracks[i];
+    let _obj = songUrl[i];
     musicData =
       process.env.TARO_ENV === 'weapp'
         ? {
@@ -196,27 +202,27 @@ class Play extends Component {
     });
   }
   getTime(i) {
-    let { playList } = this.props.counter;
-    let time = playList.playlist.tracks[i].dt / 60000;
+    let { songUrl } = this.props.counter;
+    let time = songUrl[i].dt / 60000;
     let arr = [time - (time % 1), parseInt((time % 1) * 60)];
     return `${arr[0] < 10 ? '0' + arr[0] : arr[0]}: ${arr[1] < 10 ? '0' + arr[1] : arr[1]}`;
   }
   render() {
-    let { songUrl, playList, playnum, musicType } = this.props.counter;
+    let { songUrl, playnum, musicType } = this.props.counter;
     return (
       <View className="play fixed">
         {songUrl.length ? (
           <View className="main">
             <Image
               onClick={this.onClickImg}
-              src={playList.playlist.tracks[playnum].al.picUrl}
+              src={songUrl[playnum].al.picUrl}
               mode="widthFix"
               className={musicType ? 'img animation-running' : 'img animation-paused'}
             ></Image>
             <View className="info">
-              <Text>{playList.playlist.tracks[playnum].name}</Text>
+              <Text>{songUrl[playnum].name}</Text>
               <Text>
-                {playList.playlist.tracks[playnum].ar[0].name} - {playList.playlist.tracks[playnum].al.name}
+                {songUrl[playnum].ar[0].name} - {songUrl[playnum].al.name}
               </Text>
             </View>
             <View className="icon">
@@ -255,7 +261,7 @@ class Play extends Component {
                     style={{ height: ['300px'] }}
                   >
                     <AtList>
-                      {playList.playlist.tracks.map((r, i) => {
+                      {songUrl.map((r, i) => {
                         if (i < this.state.num * 10)
                           return (
                             <AtListItem

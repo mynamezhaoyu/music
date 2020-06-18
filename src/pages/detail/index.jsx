@@ -74,7 +74,7 @@ class Detail extends Component {
       sliderValue: 0,
       time: '00:00'
     });
-    let { playnum, songUrl, playList } = this.props.counter;
+    let { playnum, songUrl} = this.props.counter;
     let index = playnum - 1;
     let musicData = {};
     // 重置
@@ -86,7 +86,7 @@ class Detail extends Component {
       this.up();
       return;
     }
-    let _obj = playList.playlist.tracks[index];
+    let _obj = songUrl[index];
     musicData =
       process.env.TARO_ENV === 'weapp'
         ? {
@@ -105,7 +105,7 @@ class Detail extends Component {
     }
   }
   getUrl(index) {
-    let { playnum, songUrl, playList } = this.props.counter;
+    let { playnum, songUrl } = this.props.counter;
     return songUrl[index ? index : playnum].url || `https://music.163.com/song/media/outer/url?id=${songUrl[index ? index : playnum].id}.mp3`;
   }
   // 下一首
@@ -115,7 +115,7 @@ class Detail extends Component {
       sliderValue: 0,
       time: '00:00'
     });
-    let { playnum, songUrl, playList } = this.props.counter;
+    let { playnum, songUrl } = this.props.counter;
     let index = playnum + 1;
     let musicData = {};
     // 重置
@@ -127,7 +127,8 @@ class Detail extends Component {
       this.down();
       return;
     }
-    let _obj = playList.playlist.tracks[index];
+    console.log(this.getUrl(index));
+    let _obj = songUrl[index];
     musicData =
       process.env.TARO_ENV === 'weapp'
         ? {
@@ -178,8 +179,8 @@ class Detail extends Component {
     }, 1000);
   }
   render() {
-    let { playList, playnum, musicType } = this.props.counter;
-    let data = playList.playlist && playList.playlist.tracks[playnum];
+    let { playnum, musicType, songUrl } = this.props.counter;
+    let data = songUrl && songUrl[playnum];
     return (
       <View className="detail" style={{ paddingTop: [`${this.state.num}PX`] }}>
         <Image className="song__bg" src={data.al.picUrl} />
