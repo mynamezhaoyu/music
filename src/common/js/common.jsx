@@ -7,7 +7,9 @@ let obj = {
       timestamp: new Date()
     });
     // 歌单详情可以拿到歌单里面所有的id
-    let arr = data.data.playlist.trackIds.map(r => r.id).join(",");
+    let arr = data.data.playlist.trackIds.map(r => r.id);
+    arr.splice(500);
+    arr = arr.join(",");
     // 这个接口拿到歌曲详情的信息（name, 图片等等）
     let detailFn = http.get("song/detail", {
       ids: arr,
@@ -29,7 +31,7 @@ let obj = {
     });
     // 第几首歌能播放
     let num = _extend.findIndex(r => r.url);
-    return [data.data, _extend, num]
+    return [data.data, _extend, num];
   }
 };
 export default obj;

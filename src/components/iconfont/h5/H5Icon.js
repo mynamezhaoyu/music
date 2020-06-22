@@ -10,6 +10,23 @@ export const H5Icon = ({ color, name, size, style: _style, ...rest }) => {
   const style = _style ? { ...DEFAULT_STYLE, ..._style } : DEFAULT_STYLE;
 
   switch (name) {
+    case 'ziyuan':
+      return (
+        <svg viewBox="0 0 1024 1024" width={size + 'rem'} height={size + 'rem'} style={style} {...rest}>
+          <path
+            d="M512 192m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"
+            fill={getIconColor(color, 0, '#4D4D4D')}
+          />
+          <path
+            d="M512 832m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"
+            fill={getIconColor(color, 1, '#4D4D4D')}
+          />
+          <path
+            d="M512 512m-64 0a64 64 0 1 0 128 0 64 64 0 1 0-128 0Z"
+            fill={getIconColor(color, 2, '#4D4D4D')}
+          />
+        </svg>
+      );
     case 'pinglun2':
       return (
         <svg viewBox="0 0 1024 1024" width={size + 'rem'} height={size + 'rem'} style={style} {...rest}>

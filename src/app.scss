@@ -4,6 +4,7 @@ page {
   color: #fff;
   background-color: $bg-color;
   box-sizing: border-box;
+  position: relative;
 }
 #app {
   box-sizing: border-box;
@@ -111,6 +112,7 @@ page {
     }
   }
 }
-.swiper-slide { // 解决h5 width 100%被冲掉的问题!
+.swiper-slide {
+  // 解决h5 width 100%被冲掉的问题!
   width: 100% !important;
 }

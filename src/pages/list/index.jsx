@@ -16,7 +16,8 @@ class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      num: 0
+      num: 0,
+      y: true
     };
   }
   componentDidMount() {}
@@ -27,6 +28,16 @@ class List extends Component {
     });
   }
   componentDidShow() {}
+  ac(x) {
+    this.setState({
+      y: false
+    });
+  }
+  ab() {
+    this.setState({
+      y: true
+    });
+  }
   render() {
     let { playList, songUrl } = this.props.counter;
     let [data, url] = [playList.playlist, songUrl];
@@ -36,10 +47,11 @@ class List extends Component {
           <Image className="song__bg" src={data.coverImgUrl} />
           <ScrollView
             className="scrollview"
-            scrollY
+            scrollY={this.state.y}
             scrollWithAnimation
             enableBackToTop
             scrollAnchoring={true}
+            onScrollToLower={this.ac.bind(this)}
           >
             <View className="navbar">
               <View
@@ -53,7 +65,15 @@ class List extends Component {
               <View className="navbar-center">歌单</View>
               <View className="navbar-right"></View>
             </View>
-            <View className="info">
+            <View
+              className="info"
+              style={{
+                height: [`${this.state.y ? "200px" : "0"}`],
+                opacity: [`${this.state.y ? 1 : 0}`],
+                padding: [`${this.state.y ? 1 : 0}`],
+                transition: [`${this.state.y ? "all 1s" : ""}`]
+              }}
+            >
               <View className="info-top">
                 <Image src={data.coverImgUrl} className="img" />
                 <View className="playCount">
@@ -93,21 +113,41 @@ class List extends Component {
                   <Text className="all">播放全部</Text>
                   <Text className="all-music">(共{url.length}首)</Text>
                 </View>
-                <View className="collect">收藏</View>
+                <View className="collect">
+                  + 收藏(
+                  {(data.subscribedCount + " ").length > 5
+                    ? (data.subscribedCount + " ").slice(0, -5) + " 万"
+                    : data.subscribedCount}
+                  )
+                </View>
               </View>
-              <View className="music-list">
-                {url.map((r, i) => {
-                  return (
-                    <View className="detail" key={r.name + i}>
-                      <View className="name">
-                        <Text>{i + 1}</Text>
-                        <View>{r.name}</View>
+              <ScrollView
+                className="scrollview"
+                scrollY={!this.state.y}
+                scrollWithAnimation
+                enableBackToTop
+                scrollAnchoring={true}
+                onScrollToUpper={this.ab.bind(this)}
+              >
+                <View className="music-list">
+                  {url.map((r, i) => {
+                    return (
+                      <View className="detail" key={r.name + i}>
+                        <View className="name">
+                          <View className="num">{i + 1}</View>
+                          <View>
+                            <View>{r.name}</View>
+                            <View className="singer">{r.ar[0].name}</View>
+                          </View>
+                        </View>
+                        <View className="more">
+                          <IconFont name="ziyuan" size="50" color="#fff" />
+                        </View>
                       </View>
-                      <View>...</View>
-                    </View>
-                  );
-                })}
-              </View>
+                    );
+                  })}
+                </View>
+              </ScrollView>
             </View>
           </ScrollView>
         </View>
