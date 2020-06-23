@@ -45,14 +45,6 @@ class Index extends Component {
       http.get("personalized?limit=10").then(res => {
         this.props.addRedux(res.data.result, "addPersonalized");
       });
-    },
-    async handleClickplay(val) {
-      let arr = await common.play(val.id);
-      // 存到redux
-      this.props.addRedux(arr[0], "addPlayList");
-      this.props.addRedux(arr[1], "addSongUrl");
-      await this.props.addRedux(arr[2], "addPlayNum");
-      Taro.eventCenter.trigger("playMusic");
     }
   };
   render() {
@@ -60,9 +52,7 @@ class Index extends Component {
       <View className="index">
         <Box>
           <Header></Header>
-          <Personalized
-            handleClickplay={this.fun.handleClickplay.bind(this)}
-          ></Personalized>
+          <Personalized></Personalized>
         </Box>
       </View>
     );

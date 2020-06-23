@@ -1,3 +1,4 @@
+// 具体注释可以去 reducers
 const ADDBANNER = 'ADDBANNER';
 const ADDPERSONALIZED = 'ADDPERSONALIZED';
 const ADDPLAYLIST = 'ADDPLAYLIST';

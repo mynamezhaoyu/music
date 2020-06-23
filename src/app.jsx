@@ -15,6 +15,7 @@ class App extends Component {
     Taro.getSystemInfo({}).then((res) => {
       Taro.$navBarMarginTop = res.statusBarHeight || 0;
     });
+    Taro.$store = store;
   }
 
   componentDidShow() {}

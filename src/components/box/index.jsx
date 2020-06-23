@@ -1,7 +1,7 @@
-import Taro, { Component } from '@tarojs/taro';
-import { View } from '@tarojs/components';
-import { connect } from '@tarojs/redux';
-import Play from '../../components/play/index';
+import Taro, { Component } from "@tarojs/taro";
+import { View } from "@tarojs/components";
+import { connect } from "@tarojs/redux";
+import Play from "../../components/play/index";
 @connect(({ counter }) => ({
   counter
 }))
@@ -13,10 +13,20 @@ class Header extends Component {
     // 整个页面只需要执行一次的时候用这个
   }
   render() {
+    let [songUrl] = [this.props.counter.songUrl];
     return (
       <View className="box">
         {this.props.children}
-        {process.env.TARO_ENV === 'h5' ? this.props.counter.songUrl.length ? <Play /> : '' : <Play />}
+        {/* h5 单独判断，必须先有值再渲染，不然会报错 */}
+        {process.env.TARO_ENV === "h5" ? (
+          songUrl && songUrl.url.length ? (
+            <Play />
+          ) : (
+            ""
+          )
+        ) : (
+          <Play />
+        )}
       </View>
     );
   }

@@ -28,21 +28,11 @@ class List extends Component {
     });
   }
   componentDidShow() {}
-  ac(x) {
-    this.setState({
-      y: false
-    });
-  }
-  ab() {
-    this.setState({
-      y: true
-    });
-  }
   render() {
-    let { playList, songUrl } = this.props.counter;
-    let [data, url] = [playList.playlist, songUrl];
+    let { songUrl } = this.props.counter;
+    let [url, data] = [songUrl.url, songUrl.playlist];
     return (
-      data && (
+      url && (
         <View className="list" style={{ paddingTop: [`${this.state.num}PX`] }}>
           <Image className="song__bg" src={data.coverImgUrl} />
           <ScrollView
@@ -51,7 +41,11 @@ class List extends Component {
             scrollWithAnimation
             enableBackToTop
             scrollAnchoring={true}
-            onScrollToLower={this.ac.bind(this)}
+            onScrollToLower={() => {
+              this.setState({
+                y: false
+              });
+            }}
           >
             <View className="navbar">
               <View
@@ -127,7 +121,11 @@ class List extends Component {
                 scrollWithAnimation
                 enableBackToTop
                 scrollAnchoring={true}
-                onScrollToUpper={this.ab.bind(this)}
+                onScrollToUpper={() => {
+                  this.setState({
+                    y: true
+                  });
+                }}
               >
                 <View className="music-list">
                   {url.map((r, i) => {

@@ -4,10 +4,10 @@ const INITIAL_STATE = {
   banner: [], // banners 数据
   personalized: [], // 推荐歌单 数据
   playList: [], // 点击歌单数据
-  songUrl: [], // 详细歌单url数据
+  songUrl: [], // 歌单数据
   playnum: 0, // 当前播放
-  audioContext: process.env.TARO_ENV === 'weapp' ? Taro.getBackgroundAudioManager() : Taro.createInnerAudioContext(),
-  musicType: true
+  audioContext: process.env.TARO_ENV === 'weapp' ? Taro.getBackgroundAudioManager() : Taro.createInnerAudioContext(), // 背景音乐
+  musicType: true // 播放状态（开始，停止）
 };
 
 export default function counter(state = INITIAL_STATE, action) {
