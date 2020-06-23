@@ -60,16 +60,6 @@ class Play extends Component {
       });
     }
   }
-  getUrl(index) {
-    let { playnum, songUrl } = this.props.counter;
-    let url = songUrl.url;
-    return (
-      url[index ? index : playnum].url ||
-      `https://music.163.com/song/media/outer/url?id=${
-        url[index ? index : playnum].id
-      }.mp3`
-    );
-  }
   // 暂停
   pause() {
     this.props.counter.audioContext.pause();
@@ -85,7 +75,6 @@ class Play extends Component {
     let { playnum, songUrl } = this.props.counter;
     let url = songUrl.url;
     let index = playnum - 1;
-    let musicData = {};
     // 重置
     if (index < 0) {
       index = url.length - 1;
@@ -95,30 +84,13 @@ class Play extends Component {
       this.up();
       return;
     }
-    let _obj = url[index];
-    musicData =
-      process.env.TARO_ENV === "weapp"
-        ? {
-            title: _obj.name,
-            epname: _obj.ar[0].name,
-            singer: _obj.al.name,
-            coverImgUrl: _obj.al.picUrl,
-            src: this.getUrl(index)
-          }
-        : {
-            src: this.getUrl(index)
-          };
-    this.props.addRedux(musicData, "updateAudioContext");
-    if (!this.props.counter.addMusicType) {
-      this.props.addRedux(true, "addMusicType");
-    }
+    common.update();
   }
   // 下一首
   async down() {
     let { playnum, songUrl } = this.props.counter;
     let url = songUrl.url;
     let index = playnum + 1;
-    let musicData = {};
     // 重置
     if (index >= url.length) {
       index = 0;
@@ -128,23 +100,7 @@ class Play extends Component {
       this.down();
       return;
     }
-    let _obj = url[index];
-    musicData =
-      process.env.TARO_ENV === "weapp"
-        ? {
-            title: _obj.name,
-            epname: _obj.ar[0].name,
-            singer: _obj.al.name,
-            coverImgUrl: _obj.al.picUrl,
-            src: this.getUrl(index)
-          }
-        : {
-            src: this.getUrl(index)
-          };
-    this.props.addRedux(musicData, "updateAudioContext");
-    if (!this.props.counter.addMusicType) {
-      this.props.addRedux(true, "addMusicType");
-    }
+    common.update();
   }
   handleChange(val) {
     this.setState(
@@ -167,28 +123,9 @@ class Play extends Component {
       });
     }
   }
-  changePlaynum(i) {
-    let { songUrl } = this.props.counter;
-    let url = songUrl.url;
-    let musicData = {};
-    this.props.addRedux(i, "addPlayNum");
-    let _obj = url[i];
-    musicData =
-      process.env.TARO_ENV === "weapp"
-        ? {
-            title: _obj.name,
-            epname: _obj.ar[0].name,
-            singer: _obj.al.name,
-            coverImgUrl: _obj.al.picUrl,
-            src: this.getUrl(i)
-          }
-        : {
-            src: this.getUrl(i)
-          };
-    this.props.addRedux(musicData, "updateAudioContext");
-    if (!this.props.counter.addMusicType) {
-      this.props.addRedux(true, "addMusicType");
-    }
+  async changePlaynum(i) {
+    await this.props.addRedux(i, "addPlayNum");
+    common.update();
   }
   onClickImg() {
     Taro.navigateTo({
@@ -270,7 +207,7 @@ class Play extends Component {
                               disabled={url[i].url ? false : true}
                               title={r.name + " - " + r.ar[0].name}
                               key={r.name + i}
-                              extraText={this.getTime(i)}
+                              extraText={common.getTime(r.dt / 1000)}
                               onClick={this.changePlaynum.bind(this, i)}
                             />
                           );

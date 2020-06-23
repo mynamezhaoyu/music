@@ -41,7 +41,12 @@ let obj = {
     });
   },
   async update() {
-    let { playnum, songUrl } = Taro.$store.getState().counter;
+    let {
+      playnum,
+      songUrl,
+      addMusicType,
+      audioContext
+    } = Taro.$store.getState().counter;
     // 因为微信小程序具备后台播放的功能。所以配置的参数不同
     let [musicData, data] = [{}, songUrl.url[playnum]];
     if (process.env.TARO_ENV === "weapp") {
@@ -67,6 +72,20 @@ let obj = {
       type: "UPDATEAUDIOCONTEXT",
       data: musicData
     });
+    if (!addMusicType) {
+      await Taro.$store.dispatch({
+        type: "ADDMUSICTYPE",
+        data: true
+      });
+    }
+    console.log(audioContext.onEnded);
+  },
+  getTime(val) {
+    let time = val / 60;
+    let arr = [time - (time % 1), parseInt((time % 1) * 60)];
+    return `${arr[0] < 10 ? "0" + arr[0] : arr[0]}: ${
+      arr[1] < 10 ? "0" + arr[1] : arr[1]
+    }`;
   }
 };
 export default obj;
