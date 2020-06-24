@@ -17,38 +17,38 @@ let obj = {
       arr2[_n] = { ...arr2[_n], ...arr[n], ...r }; // 数据合并
     });
     Taro.$store.dispatch({
-      type: "ADDSONGURL",
+      type: "updateSongList",
       data: { ...data.data, ...{ url: arr2 } }
     });
+    Taro.$store.dispatch({
+      type: "addPlayList",
+      data: arr2
+    });
     await Taro.$store.dispatch({
-      type: "ADDPLAYNUM",
+      type: "addPlayNum",
       data: arr2.findIndex(r => r.url)
     });
     return [data.data, arr2, arr2.findIndex(r => r.url)];
   },
+  // 这个接口拿到歌曲详情的信息（name, 图片等等）
   async musicDetail(arr) {
-    // 这个接口拿到歌曲详情的信息（name, 图片等等）
     return http.get("song/detail", {
       ids: arr,
       timestamp: new Date()
     });
   },
+  // 这个接口拿到id的url
   async musicUrl(arr) {
-    // 这个接口拿到id的url
     return http.get("song/url", {
       id: arr,
       timestamp: new Date()
     });
   },
+  // 更新歌曲详情
   async update() {
-    let {
-      playnum,
-      songUrl,
-      addMusicType,
-      audioContext
-    } = Taro.$store.getState().counter;
+    let { playNum, musicType, playList } = Taro.$store.getState().counter;
     // 因为微信小程序具备后台播放的功能。所以配置的参数不同
-    let [musicData, data] = [{}, songUrl.url[playnum]];
+    let [musicData, data] = [{}, playList[playNum]];
     if (process.env.TARO_ENV === "weapp") {
       let _obj = data;
       musicData = {
@@ -69,23 +69,81 @@ let obj = {
       };
     }
     await Taro.$store.dispatch({
-      type: "UPDATEAUDIOCONTEXT",
+      type: "updateAudioContext",
       data: musicData
     });
-    if (!addMusicType) {
+    if (!musicType) {
       await Taro.$store.dispatch({
-        type: "ADDMUSICTYPE",
+        type: "updateMusicType",
         data: true
       });
     }
-    console.log(audioContext.onEnded);
   },
+  // 时间转换
   getTime(val) {
     let time = val / 60;
     let arr = [time - (time % 1), parseInt((time % 1) * 60)];
     return `${arr[0] < 10 ? "0" + arr[0] : arr[0]}: ${
       arr[1] < 10 ? "0" + arr[1] : arr[1]
     }`;
+  },
+  // 歌曲暂停
+  musicPause() {
+    let { audioContext } = Taro.$store.getState().counter;
+    audioContext.pause();
+    Taro.$store.dispatch({
+      type: "updateMusicType",
+      data: false
+    });
+  },
+  // 开始
+  musicPlay() {
+    let { audioContext } = Taro.$store.getState().counter;
+    audioContext.play();
+    Taro.$store.dispatch({
+      type: "updateMusicType",
+      data: true
+    });
+  },
+  async up() {
+    let { playNum, playList } = Taro.$store.getState().counter;
+    let index = playNum - 1;
+    // 重置
+    if (index < 0) index = playList.length - 1;
+    await Taro.$store.dispatch({
+      type: "addPlayNum",
+      data: index
+    });
+    if (
+      !playList[index] ||
+      playList[index].url === null ||
+      !playList[index].url
+    ) {
+      this.up();
+      return;
+    }
+    this.update();
+  },
+  async down() {
+    let { playNum, playList } = Taro.$store.getState().counter;
+    let index = playNum + 1;
+    // 重置
+    if (index >= playList.length) {
+      index = 0;
+    }
+    await Taro.$store.dispatch({
+      type: "addPlayNum",
+      data: index
+    });
+    if (
+      !playList[index] ||
+      playList[index].url === null ||
+      !playList[index].url
+    ) {
+      this.down();
+      return;
+    }
+    this.update();
   }
 };
 export default obj;

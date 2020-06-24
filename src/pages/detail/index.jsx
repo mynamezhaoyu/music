@@ -53,14 +53,12 @@ class Detail extends Component {
   }
   // 暂停
   pause() {
-    this.props.counter.audioContext.pause();
-    this.props.addRedux(false, "addMusicType");
+    common.musicPause();
     clearInterval(this.trace);
   }
   // 开始
   begin() {
-    this.props.counter.audioContext.play();
-    this.props.addRedux(true, "addMusicType");
+    common.musicPlay();
     this.autoTime(false);
   }
   // 上一首
@@ -70,18 +68,7 @@ class Detail extends Component {
       sliderValue: 0,
       time: "00:00"
     });
-    let { playnum, songUrl } = this.props.counter;
-    let url = songUrl.url;
-    let index = playnum - 1;
-    let musicData = {};
-    // 重置
-    if (index < 0) index = url.length - 1;
-    await this.props.addRedux(index, "addPlayNum");
-    if (!url[index] || url[index].url === null || !url[index].url) {
-      this.up();
-      return;
-    }
-    common.update();
+    common.up();
   }
   // 下一首
   async down() {
@@ -90,20 +77,7 @@ class Detail extends Component {
       sliderValue: 0,
       time: "00:00"
     });
-    let { playnum, songUrl } = this.props.counter;
-    let url = songUrl.url;
-    let index = playnum + 1;
-    let musicData = {};
-    // 重置
-    if (index >= url.length) {
-      index = 0;
-    }
-    await this.props.addRedux(index, "addPlayNum");
-    if (!url[index] || url[index].url === null || !url[index].url) {
-      this.down();
-      return;
-    }
-    common.update();
+    common.down();
   }
   // 拖动滚动条
   sliderChange(val) {
@@ -135,8 +109,8 @@ class Detail extends Component {
     }, 1000);
   }
   render() {
-    let { playnum, musicType, songUrl } = this.props.counter;
-    let data = songUrl.url && songUrl.url[playnum];
+    let { playNum, musicType, songList } = this.props.counter;
+    let data = songList.url && songList.url[playNum];
     return (
       <View className="detail" style={{ paddingTop: [`${this.state.num}PX`] }}>
         <Image className="song__bg" src={data.al.picUrl} />

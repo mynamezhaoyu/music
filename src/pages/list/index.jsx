@@ -29,8 +29,8 @@ class List extends Component {
   }
   componentDidShow() {}
   render() {
-    let { songUrl } = this.props.counter;
-    let [url, data] = [songUrl.url, songUrl.playlist];
+    let { songList } = this.props.counter;
+    let [url, data] = [songList.url, songList.playlist];
     return (
       url && (
         <View className="list" style={{ paddingTop: [`${this.state.num}PX`] }}>

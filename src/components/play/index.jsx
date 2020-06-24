@@ -62,45 +62,19 @@ class Play extends Component {
   }
   // 暂停
   pause() {
-    this.props.counter.audioContext.pause();
-    this.props.addRedux(false, "addMusicType");
+    common.musicPause();
   }
   // 开始
   begin() {
-    this.props.counter.audioContext.play();
-    this.props.addRedux(true, "addMusicType");
+    common.musicPlay();
   }
   // 上一首
   async up() {
-    let { playnum, songUrl } = this.props.counter;
-    let url = songUrl.url;
-    let index = playnum - 1;
-    // 重置
-    if (index < 0) {
-      index = url.length - 1;
-    }
-    await this.props.addRedux(index, "addPlayNum");
-    if (!url[index] || url[index].url === null || !url[index].url) {
-      this.up();
-      return;
-    }
-    common.update();
+    common.up();
   }
   // 下一首
   async down() {
-    let { playnum, songUrl } = this.props.counter;
-    let url = songUrl.url;
-    let index = playnum + 1;
-    // 重置
-    if (index >= url.length) {
-      index = 0;
-    }
-    await this.props.addRedux(index, "addPlayNum");
-    if (!url[index] || url[index].url === null || !url[index].url) {
-      this.down();
-      return;
-    }
-    common.update();
+    common.down();
   }
   handleChange(val) {
     this.setState(
@@ -115,9 +89,8 @@ class Play extends Component {
     );
   }
   onScrollToLower() {
-    let { songUrl } = this.props.counter;
-    let url = songUrl.url;
-    if (this.state.num * 10 < url.length) {
+    let { playList } = this.props.counter;
+    if (this.state.num * 10 < playList.length) {
       this.setState({
         num: this.state.num + 1
       });
@@ -132,34 +105,24 @@ class Play extends Component {
       url: "/pages/detail/index"
     });
   }
-  getTime(i) {
-    let { songUrl } = this.props.counter;
-    let url = songUrl.url;
-    let time = url[i].dt / 60000;
-    let arr = [time - (time % 1), parseInt((time % 1) * 60)];
-    return `${arr[0] < 10 ? "0" + arr[0] : arr[0]}: ${
-      arr[1] < 10 ? "0" + arr[1] : arr[1]
-    }`;
-  }
   render() {
-    let { songUrl, playnum, musicType } = this.props.counter;
-    let url = songUrl.url;
+    let { playNum, musicType, playList } = this.props.counter;
     return (
       <View className="play fixed">
-        {url && url.length ? (
+        {playList.length ? (
           <View className="main">
             <Image
               onClick={this.onClickImg}
-              src={url[playnum].al.picUrl}
+              src={playList[playNum].al.picUrl}
               mode="widthFix"
               className={
                 musicType ? "img animation-running" : "img animation-paused"
               }
             ></Image>
             <View className="info">
-              <Text>{url[playnum].name}</Text>
+              <Text>{playList[playNum].name}</Text>
               <Text>
-                {url[playnum].ar[0].name} - {url[playnum].al.name}
+                {playList[playNum].ar[0].name} - {playList[playNum].al.name}
               </Text>
             </View>
             <View className="icon">
@@ -187,7 +150,7 @@ class Play extends Component {
                 <AtFloatLayout
                   isOpened={this.state.isOpened}
                   className="playatfloatlayout"
-                  title={`当前播放 ${url.length}`}
+                  title={`当前播放 ${playList.length}`}
                   onClose={this.handleChange.bind(this, false)}
                 >
                   <ScrollView
@@ -198,13 +161,13 @@ class Play extends Component {
                     style={{ height: ["300px"] }}
                   >
                     <AtList>
-                      {url.map((r, i) => {
+                      {playList.map((r, i) => {
                         if (i < this.state.num * 10)
                           return (
                             <AtListItem
-                              className={i === playnum ? "listActive" : ""}
+                              className={i === playNum ? "listActive" : ""}
                               thumb={r.al.picUrl}
-                              disabled={url[i].url ? false : true}
+                              disabled={playList[i].url ? false : true}
                               title={r.name + " - " + r.ar[0].name}
                               key={r.name + i}
                               extraText={common.getTime(r.dt / 1000)}
