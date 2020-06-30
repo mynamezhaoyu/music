@@ -79,13 +79,12 @@ class Detail extends Component {
   }
   // 拖动滚动条
   sliderChange(val) {
-    let value = val.value;
     this.setState({
-      sliderValue: value,
-      time: common.getTime(value)
+      sliderValue: val,
+      time: common.getTime(val)
     });
-    this.props.counter.audioContext.seek(value);
-    this.newTime = value;
+    this.props.counter.audioContext.seek(val);
+    this.newTime = val;
   }
   trace = "";
   newTime = 0;
@@ -112,7 +111,7 @@ class Detail extends Component {
     return (
       data && (
         <View
-          className="detail"
+          className="details"
           style={{ paddingTop: [`${this.state.num}PX`] }}
         >
           <Image className="song__bg" src={common.img(data.al.picUrl)} />

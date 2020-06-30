@@ -1,3 +1,4 @@
+let path = require('path');
 const config = {
   projectName: 'myApp',
   date: '2020-2-25',
@@ -37,7 +38,7 @@ const config = {
   plugins: [],
   defineConstants: {},
   sass: {
-    resource: ['src/common/css/common.scss'] // scss全局变量
+    resource: path.resolve(__dirname, '..', 'src/common/css/common.scss') // scss全局变量
   },
   mini: {
     postcss: {

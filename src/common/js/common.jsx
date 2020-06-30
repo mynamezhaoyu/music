@@ -1,25 +1,6 @@
 import http from "../../services/api";
 import Taro from "@tarojs/taro";
 let obj = {
-  isAir(obj, str) {
-    // 看值会不是为空，但是taro这边编译的有问题。我在调用的时候，强行给我加了！取反
-    let isError = false;
-    if (obj === null) isError = false;
-    if (typeof obj === "object") {
-      isError = Array.isArray(obj) ? obj.length : Object.keys(obj).length;
-    } else {
-      isError = obj;
-    }
-    isError = isError ? obj : false;
-    if (!isError) {
-      // 如果是错误 直接返回
-      return false;
-    } else if (isError && str) {
-      // 如果是真，并且有字符串的话
-      return this.isAir(obj[str]);
-    }
-    return isError;
-  },
   async play(id) {
     // 先拿歌单详情
     let data = await http.get("playlist/detail", {
@@ -53,7 +34,7 @@ let obj = {
   },
   // 更新歌曲详情
   async update(index) {
-    if (index) {
+    if (index !== undefined) {
       await Taro.$store.dispatch({
         type: "addPlayNum",
         data: index
@@ -124,13 +105,17 @@ let obj = {
     let index = playNum - 1;
     // 重置
     if (index < 0) index = playList.length - 1;
-    if (!this.isAir(playList[index], "url")) {
+    if (!playList[index].url) {
       // 如果没有url，用id请求数据
       let data = await this.httpDetUrl(playList[index].id);
       if (data[1][0].url) {
         // 如果请求回来还是没有url，那么证明这首歌，是收费或者是vip歌曲。直接进行下一首。
         this.update(index);
       } else {
+        await Taro.$store.dispatch({
+          type: "addPlayNum",
+          data: index
+        });
         this.up();
       }
       return;
@@ -145,13 +130,18 @@ let obj = {
     if (index >= playList.length) {
       index = 0;
     }
-    if (!this.isAir(playList[index], "url")) {
+    if (!playList[index].url) {
+      // taro 这里给我自动编译成取反，无解。我只能手动加取反
       // 如果没有url，用id请求数据
       let data = await this.httpDetUrl(playList[index].id);
       if (data[1][0].url) {
         // 如果请求回来还是没有url，那么证明这首歌，是收费或者是vip歌曲。直接进行下一首。
         this.update(index);
       } else {
+        await Taro.$store.dispatch({
+          type: "addPlayNum",
+          data: index
+        });
         this.down();
       }
       return;

@@ -83,7 +83,7 @@ class List extends Component {
               style={{
                 height: [`${this.state.y ? "200px" : "0"}`],
                 opacity: [`${this.state.y ? 1 : 0}`],
-                padding: [`${this.state.y ? 1 : 0}`],
+                padding: [`${this.state.y ? '' : 0}`],
                 transition: [`${this.state.y ? "all 1s" : ""}`]
               }}
             >
@@ -156,7 +156,7 @@ class List extends Component {
                             <View className="num">{i + 1}</View>
                             <View>
                               <View>{r.name}</View>
-                              <View className="singer">{r.ar[0].name}</View>
+                              <View className="singer">{r.ar && r.ar[0].name}</View>
                             </View>
                           </View>
                           <View className="more">

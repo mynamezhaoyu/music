@@ -24,7 +24,9 @@ class Play extends Component {
     };
   }
   componentWillMount() {
+    console.log(1);
     Taro.eventCenter.on("playMusic", () => {
+      console.log(2);
       this.play();
     });
   }
@@ -114,7 +116,7 @@ class Play extends Component {
   render() {
     let { playNum, musicType, playList } = this.props.counter;
     return (
-      <View className="play fixed">
+      <View className="plays fixed">
         {playList.length ? (
           <View className="main">
             <Image

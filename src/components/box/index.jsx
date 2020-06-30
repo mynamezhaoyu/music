@@ -13,13 +13,13 @@ class Header extends Component {
     // 整个页面只需要执行一次的时候用这个
   }
   render() {
-    let [songList] = [this.props.counter.songList];
+    let { playList } = this.props.counter;
     return (
       <View className="box">
         {this.props.children}
         {/* h5 单独判断，必须先有值再渲染，不然会报错 */}
         {process.env.TARO_ENV === "h5" ? (
-          songList && songList.url.length ? (
+          playList && playList.length ? (
             <Play />
           ) : (
             ""
