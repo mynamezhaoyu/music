@@ -1,11 +1,8 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, ScrollView, Image } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
 import "./personalized.scss";
 import IconFont from "../iconfont";
-import http from "../../services/api";
-import common from "../../common/js/common";
-import { addRedux } from "../../actions/counter";
+import { common, http, addRedux, connect } from "../../common/js/export";
 
 @connect(
   ({ counter }) => ({
@@ -19,14 +16,29 @@ import { addRedux } from "../../actions/counter";
 )
 class Personalized extends Component {
   async play(val) {
-    await common.play(val.id);
+    let arr = await common.play(val.id);
+    // 只有点击播放按钮的时候，才往播放列表插入数据
+    await Promise.all([
+      Taro.$store.dispatch({
+        type: "addPlayList",
+        data: arr[1]
+      }),
+      Taro.$store.dispatch({
+        type: "addPlayNum",
+        data: arr[1].findIndex(r => r.url)
+      })
+    ]);
     Taro.eventCenter.trigger("playMusic");
   }
   async getPlayList(val) {
     Taro.navigateTo({
       url: "/pages/list/index"
     });
-    common.play(val.id);
+    let arr = await common.play(val.id);
+    Taro.$store.dispatch({
+      type: "updateSongList",
+      data: { ...arr[0], ...{ url: arr[1] } }
+    });
   }
   render() {
     return (
@@ -43,7 +55,7 @@ class Personalized extends Component {
               <View className="list" key={r.name + i}>
                 <View className="item">
                   <Image
-                    src={r.picUrl}
+                    src={common.img(r.picUrl)}
                     className="img"
                     onClick={this.getPlayList.bind(this, r)}
                   ></Image>

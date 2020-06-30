@@ -40,7 +40,7 @@ export default function counter(state = INITIAL_STATE, action) {
       }
     },
     {
-      name: "updateSongList",
+      name: "updateSongList", // 更新歌单列表数据
       fn: () => {
         return {
           ...state,

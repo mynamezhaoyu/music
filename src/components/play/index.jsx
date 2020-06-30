@@ -1,11 +1,9 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Image, Text, ScrollView } from "@tarojs/components";
-import { connect } from "@tarojs/redux";
 import IconFont from "../iconfont";
 import "./index.scss";
-import { addRedux } from "../../actions/counter";
-import common from "../../common/js/common";
 import { AtList, AtListItem, AtFloatLayout } from "taro-ui";
+import { common, http, addRedux, connect } from "../../common/js/export";
 @connect(
   ({ counter }) => ({
     counter
@@ -88,11 +86,19 @@ class Play extends Component {
           }
     );
   }
-  onScrollToLower() {
+  async onScrollToLower() {
+    // 滚动到底部触发事件
     let { playList } = this.props.counter;
-    if (this.state.num * 10 < playList.length) {
+    let num = this.state.num;
+    if (num * 10 < playList.length) {
+      let arr = playList
+        .slice(num * 10, num * 10 + 10)
+        .filter(r => !r.url)
+        .map(r => r.id)
+        .join(",");
+      if (arr.length) await common.httpDetUrl(arr);
       this.setState({
-        num: this.state.num + 1
+        num: num + 1
       });
     }
   }
@@ -113,7 +119,7 @@ class Play extends Component {
           <View className="main">
             <Image
               onClick={this.onClickImg}
-              src={playList[playNum].al.picUrl}
+              src={common.img(playList[playNum].al.picUrl)}
               mode="widthFix"
               className={
                 musicType ? "img animation-running" : "img animation-paused"
@@ -166,7 +172,7 @@ class Play extends Component {
                           return (
                             <AtListItem
                               className={i === playNum ? "listActive" : ""}
-                              thumb={r.al.picUrl}
+                              thumb={common.img(r.al.picUrl)}
                               disabled={playList[i].url ? false : true}
                               title={r.name + " - " + r.ar[0].name}
                               key={r.name + i}

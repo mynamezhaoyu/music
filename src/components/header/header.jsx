@@ -1,8 +1,8 @@
-import Taro, { Component } from '@tarojs/taro';
-import { View, Swiper, SwiperItem, Image } from '@tarojs/components';
-import { AtSearchBar } from 'taro-ui';
-import './header.scss';
-import { connect } from '@tarojs/redux';
+import Taro, { Component } from "@tarojs/taro";
+import { View, Swiper, SwiperItem, Image } from "@tarojs/components";
+import { AtSearchBar } from "taro-ui";
+import "./header.scss";
+import { common, http, addRedux, connect } from "../../common/js/export";
 @connect(({ counter }) => ({
   counter
 }))
@@ -10,7 +10,7 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputVal: ''
+      inputVal: ""
     };
   }
   componentDidMount() {
@@ -20,14 +20,32 @@ class Header extends Component {
   render() {
     return (
       <View className="_header">
-        <AtSearchBar actionName="取消" value={this.state.inputVal} className="header-search" />
+        <AtSearchBar
+          actionName="取消"
+          value={this.state.inputVal}
+          className="header-search"
+        />
         <View className="banner">
-          <Swiper indicatorColor="#fff" indicatorActiveColor="red" circular={true} indicatorDots autoplay className="header-swiper">
+          <Swiper
+            indicatorColor="#fff"
+            indicatorActiveColor="red"
+            circular={true}
+            indicatorDots
+            autoplay
+            className="header-swiper"
+          >
             {this.props.counter.banner.map((r, i) => {
               return (
                 <SwiperItem key={r.pic + i}>
-                  <Image src={r.pic} className="banner-img"></Image>
-                  <View style={{ backgroundColor: r.titleColor === 'blue' ? '#4040c1' : '#e61607', color: '#fff' }} className="icon">
+                  <Image src={common.img(r.pic)} className="banner-img"></Image>
+                  <View
+                    style={{
+                      backgroundColor:
+                        r.titleColor === "blue" ? "#4040c1" : "#e61607",
+                      color: "#fff"
+                    }}
+                    className="icon"
+                  >
                     {r.typeTitle}
                   </View>
                 </SwiperItem>

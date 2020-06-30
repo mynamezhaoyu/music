@@ -1,10 +1,9 @@
 import Taro, { Component } from "@tarojs/taro";
 import "./index.scss";
-import { connect } from "@tarojs/redux";
 import { View, Text, Image, ScrollView } from "@tarojs/components";
-import { addRedux } from "../../actions/counter";
 import { AtIcon } from "taro-ui";
 import IconFont from "../../components/iconfont";
+import { common, http, addRedux, connect } from "../../common/js/export";
 @connect(({ counter }) => ({
   counter
 }))
@@ -16,16 +15,36 @@ class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      num: 0,
-      y: true
+      num: 2,
+      y: true,
+      top: 0
     };
   }
   componentDidMount() {}
   componentWillMount() {
     // 自定义头部，初始化置顶
     this.setState({
-      num: Taro.$navBarMarginTop
+      top: Taro.$navBarMarginTop
     });
+  }
+  async onScrollToLower() {
+    // 滚动到底部触发事件
+    let { songList } = this.props.counter;
+    let num = this.state.num;
+    
+    if (num * 10 < songList.length) {
+      let arr = songList
+        .slice(num * 10, num * 10 + 10)
+        .filter(r => !r.url)
+        .map(r => r.id)
+        .join(",");
+      console.log(arr);
+
+      // await common.httpDetUrl(arr)
+      this.setState({
+        num: this.state.num + 1
+      });
+    }
   }
   componentDidShow() {}
   render() {
@@ -33,8 +52,8 @@ class List extends Component {
     let [url, data] = [songList.url, songList.playlist];
     return (
       url && (
-        <View className="list" style={{ paddingTop: [`${this.state.num}PX`] }}>
-          <Image className="song__bg" src={data.coverImgUrl} />
+        <View className="list" style={{ paddingTop: [`${this.state.top}PX`] }}>
+          <Image className="song__bg" src={common.img(data.coverImgUrl)} />
           <ScrollView
             className="scrollview"
             scrollY={this.state.y}
@@ -69,7 +88,7 @@ class List extends Component {
               }}
             >
               <View className="info-top">
-                <Image src={data.coverImgUrl} className="img" />
+                <Image src={common.img(data.coverImgUrl)} className="img" />
                 <View className="playCount">
                   {(data.playCount + "").length > 5
                     ? (data.playCount + " ").slice(0, -5) + " 万"
@@ -78,7 +97,7 @@ class List extends Component {
                 <View className="text-area">
                   <View className="name line-clamp2">{data.name}</View>
                   <View className="u-name">
-                    <Image src={data.creator.avatarUrl} className="u-img" />
+                    <Image src={common.img(data.creator.avatarUrl)} className="u-img" />
                     {data.creator.userType === 200 && (
                       <Text className="vip"></Text>
                     )}
@@ -126,23 +145,25 @@ class List extends Component {
                     y: true
                   });
                 }}
+                onScrollToLower={this.onScrollToLower.bind(this)}
               >
                 <View className="music-list">
                   {url.map((r, i) => {
-                    return (
-                      <View className="detail" key={r.name + i}>
-                        <View className="name">
-                          <View className="num">{i + 1}</View>
-                          <View>
-                            <View>{r.name}</View>
-                            <View className="singer">{r.ar[0].name}</View>
+                    if (i < this.state.num * 10)
+                      return (
+                        <View className="detail" key={r.name + i}>
+                          <View className="name">
+                            <View className="num">{i + 1}</View>
+                            <View>
+                              <View>{r.name}</View>
+                              <View className="singer">{r.ar[0].name}</View>
+                            </View>
+                          </View>
+                          <View className="more">
+                            <IconFont name="ziyuan" size="50" color="#fff" />
                           </View>
                         </View>
-                        <View className="more">
-                          <IconFont name="ziyuan" size="50" color="#fff" />
-                        </View>
-                      </View>
-                    );
+                      );
                   })}
                 </View>
               </ScrollView>

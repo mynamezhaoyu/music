@@ -4,7 +4,6 @@ import Header from "../../components/header/header";
 import Personalized from "../../components/personalized/personalized";
 import "./index.scss";
 import http from "../../services/api";
-import common from "../../common/js/common";
 import { connect } from "@tarojs/redux";
 import { addRedux } from "../../actions/counter";
 import Box from "../../components/box/index";
