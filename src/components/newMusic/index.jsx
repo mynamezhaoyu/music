@@ -1,7 +1,7 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Swiper, SwiperItem, Image } from "@tarojs/components";
 import { AtSearchBar } from "taro-ui";
-import "./header.scss";
+import "./index.scss";
 import { common, http, addRedux, connect } from "../../common/js/export";
 @connect(({ counter }) => ({
   counter
@@ -9,9 +9,7 @@ import { common, http, addRedux, connect } from "../../common/js/export";
 class Header extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      inputVal: ""
-    };
+    this.state = {};
   }
   componentDidMount() {
     // 整个页面只需要执行一次的时候用这个
@@ -19,19 +17,11 @@ class Header extends Component {
   componentDidShow() {}
   render() {
     return (
-      <View className="_header">
-        <AtSearchBar
-          actionName="取消"
-          value={this.state.inputVal}
-          className="header-search"
-        />
+      <View className="new-music">
+        新歌
         <View className="banner">
           <Swiper
-            indicatorColor="#fff"
-            indicatorActiveColor="red"
             circular={true}
-            indicatorDots
-            autoplay
             className="header-swiper"
           >
             {this.props.counter.banner.map((r, i) => {

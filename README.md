@@ -10,12 +10,17 @@
 
 ## 图片展示
 
-<img src="http://q9wga56zc.bkt.clouddn.com/music_1.jpg?e=1588842774&token=8jpX2y4G8cxgGIM9WZdO8m1uUijBmXEcDW89ekL9:MbHBW2OzGPcXyPDeBqo0vpiNV18=&attname=" width="400" />
+<img src="https://www.jianguoyun.com/c/tblv2/DU30qqzNNGSvY42zmNDg6SOsJ98IqnPHsZOFDgdJfPrYF_lEAFxRD_9OIuuPFVinGxwp71sg/EkH9HfmvbuJf9NohuzPJVQ/l" width="400" />
+<br>
+<br>
+<img src="https://www.jianguoyun.com/c/tblv2/uRsMHl6AtyUY02tFmCN3V44gtmnTNdYWQvEAsjUT055Tkdva39OusWtfEcRqVRnDUfu9AUQO/zRNN4JAO8pBW8wTGWbshWg/l" width="400" />
 <br>
 <br>
 
-<img src="http://q9wga56zc.bkt.clouddn.com/music_2.jpg?e=1588842774&token=8jpX2y4G8cxgGIM9WZdO8m1uUijBmXEcDW89ekL9:kPWeHqERxhiqyayFzna36uJAup4=&attname=" width="400" />
-<br>
-<br>
+<img src="https://www.jianguoyun.com/c/tblv2/SfJxoLew7q4Eeyfta0LCh5pHboVKa3UEGnJ2igAKWy3sGOPf8u7xaQMWAdd2TESqT-9lqwZ1/0PUi5ejJKzPBExMpIrHVpw/l" width="400" />
 
-<img src="http://q9wga56zc.bkt.clouddn.com/music_3.jpg?e=1588842774&token=8jpX2y4G8cxgGIM9WZdO8m1uUijBmXEcDW89ekL9:oGsk-2zMIho4A9g-ofAJldBZ1bA=&attname=" width="400" />
+
+# 更新日志
+### 1.1.0 | 2020.07.01
+- 正式增加记录。工作计划--- 首页增加新歌，新碟。
+- 解决歌单详情 歌曲名称超长变形问题

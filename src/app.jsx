@@ -15,6 +15,7 @@ class App extends Component {
     Taro.getSystemInfo({}).then((res) => {
       Taro.$navBarMarginTop = res.statusBarHeight || 0;
     });
+    Taro.$store = store;
   }
 
   componentDidShow() {}
@@ -24,7 +25,7 @@ class App extends Component {
   componentDidCatchError() {}
 
   config = {
-    pages: ['pages/index/index', 'pages/me/me', 'pages/video/video', 'pages/bbs/bbs', 'pages/detail/index', 'pages/login/login'],
+    pages: ['pages/index/index', 'pages/me/me', 'pages/detail/index',  'pages/list/index', 'pages/login/login'],
     window: {
       navigationBarBackgroundColor: '#242424',
       navigationBarTitleText: '轻云音乐',
@@ -40,18 +41,6 @@ class App extends Component {
           iconPath: './common/img/cm2_btm_icn_discovery.png',
           selectedIconPath: './common/img/cm2_btm_icn_discovery_prs.png',
           text: '发现'
-        },
-        {
-          pagePath: 'pages/video/video',
-          iconPath: './common/img/10.png',
-          selectedIconPath: './common/img/11.png',
-          text: '视频'
-        },
-        {
-          pagePath: 'pages/bbs/bbs',
-          iconPath: './common/img/cm2_btm_icn_friend.png',
-          selectedIconPath: './common/img/cm2_btm_icn_friend_prs.png',
-          text: '云村'
         },
         {
           pagePath: 'pages/me/me',

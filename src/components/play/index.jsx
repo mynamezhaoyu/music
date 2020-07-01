@@ -1,15 +1,14 @@
-import Taro, { Component } from '@tarojs/taro';
-import { View, Image, Text, ScrollView } from '@tarojs/components';
-import { connect } from '@tarojs/redux';
-import IconFont from '../iconfont';
-import './index.scss';
-import { addRedux } from '../../actions/counter';
-import { AtList, AtListItem, AtFloatLayout } from 'taro-ui';
+import Taro, { Component } from "@tarojs/taro";
+import { View, Image, Text, ScrollView } from "@tarojs/components";
+import IconFont from "../iconfont";
+import "./index.scss";
+import { AtList, AtListItem, AtFloatLayout } from "taro-ui";
+import { common, http, addRedux, connect } from "../../common/js/export";
 @connect(
   ({ counter }) => ({
     counter
   }),
-  (dispatch) => ({
+  dispatch => ({
     addRedux(val, type) {
       dispatch(addRedux(val, type));
     }
@@ -25,7 +24,7 @@ class Play extends Component {
     };
   }
   componentWillMount() {
-    Taro.eventCenter.on('playMusic', () => {
+    Taro.eventCenter.on("playMusic", () => {
       this.play();
     });
   }
@@ -36,118 +35,44 @@ class Play extends Component {
       floatLayout: false,
       num: 1
     });
-    let { playnum, songUrl, playList } = this.props.counter;
-    // 因为微信小程序具备后台播放的功能。所以配置的参数不同
-    let musicData = {};
-    if (process.env.TARO_ENV === 'weapp') {
-      let _obj = playList.playlist.tracks[playnum];
-      musicData = {
-        title: _obj.name,
-        epname: _obj.ar[0].name,
-        singer: _obj.al.name,
-        coverImgUrl: _obj.al.picUrl,
-        src: this.getUrl()
-      };
-    } else {
-      musicData = {
-        autoplay: true,
-        src: this.getUrl()
-      };
-    }
-    await this.props.addRedux(musicData, 'updateAudioContext');
+    await common.update();
+    let audio = this.props.counter.audioContext;
     // 监听播放完了，接着放下一首
-    this.props.counter.audioContext.onEnded(() => {
+    audio.onEnded(() => {
       this.down();
-      Taro.eventCenter.trigger('down');
+      Taro.eventCenter.trigger("down");
     });
-    if (process.env.TARO_ENV === 'h5') {
-      let time = 0;
-      this.props.counter.audioContext.onStop(() => {
-        this.props.counter.audioContext.play();
-        this.props.counter.audioContext.seek(this.time + 0.2);
+    // 监听失败看看为啥失败，再解决这个问题
+    audio.onError(err => {
+      console.log("你TM的为啥失败", err);
+      this.down();
+      Taro.eventCenter.trigger("down");
+    });
+    if (process.env.TARO_ENV === "h5") {
+      audio.onStop(() => {
+        audio.play();
+        audio.seek(this.time + 0.2);
       });
-      this.props.counter.audioContext.onTimeUpdate(() => {
-        this.time = this.props.counter.audioContext.currentTime;
+      audio.onTimeUpdate(() => {
+        this.time = audio.currentTime;
       });
     }
-  }
-  getUrl(index) {
-    let { playnum, songUrl } = this.props.counter;
-    return `https://music.163.com/song/media/outer/url?id=${songUrl[index ? index : playnum].id}.mp3` || songUrl[index ? index : playnum].url || '';
   }
   // 暂停
   pause() {
-    this.props.counter.audioContext.pause();
-    this.props.addRedux(false, 'addMusicType');
+    common.musicPause();
   }
   // 开始
   begin() {
-    this.props.counter.audioContext.play();
-    this.props.addRedux(true, 'addMusicType');
+    common.musicPlay();
   }
   // 上一首
   async up() {
-    let { playnum, songUrl, playList } = this.props.counter;
-    let index = playnum - 1;
-    let musicData = {};
-    // 重置
-    if (index < 0) {
-      index = songUrl.length - 1;
-    }
-    await this.props.addRedux(index, 'addPlayNum');
-    if (!songUrl[index] || songUrl[index].url === null || !songUrl[index].url) {
-      this.up();
-      return;
-    }
-    let _obj = playList.playlist.tracks[index];
-    musicData =
-      process.env.TARO_ENV === 'weapp'
-        ? {
-            title: _obj.name,
-            epname: _obj.ar[0].name,
-            singer: _obj.al.name,
-            coverImgUrl: _obj.al.picUrl,
-            src: this.getUrl(index)
-          }
-        : {
-            src: this.getUrl(index)
-          };
-    this.props.addRedux(musicData, 'updateAudioContext');
-    if (!this.props.counter.addMusicType) {
-      this.props.addRedux(true, 'addMusicType');
-    }
+    common.up();
   }
   // 下一首
   async down() {
-    let { playnum, songUrl, playList } = this.props.counter;
-    let index = playnum + 1;
-    let musicData = {};
-    // 重置
-    if (index >= songUrl.length) {
-      index = 0;
-    }
-    await this.props.addRedux(index, 'addPlayNum');
-    if (!songUrl[index] || songUrl[index].url === null || !songUrl[index].url) {
-      this.down();
-      return;
-    }
-    let _obj = playList.playlist.tracks[index];
-    musicData =
-      process.env.TARO_ENV === 'weapp'
-        ? {
-            title: _obj.name,
-            epname: _obj.ar[0].name,
-            singer: _obj.al.name,
-            coverImgUrl: _obj.al.picUrl,
-            src: this.getUrl(index)
-          }
-        : {
-            src: this.getUrl(index)
-          };
-    this.props.addRedux(musicData, 'updateAudioContext');
-    if (!this.props.counter.addMusicType) {
-      this.props.addRedux(true, 'addMusicType');
-    }
+    common.down();
   }
   handleChange(val) {
     this.setState(
@@ -161,62 +86,49 @@ class Play extends Component {
           }
     );
   }
-  onScrollToLower() {
-    if (this.state.num * 10 < this.props.counter.playList.playlist.tracks.length) {
+  async onScrollToLower() {
+    // 滚动到底部触发事件
+    let { playList } = this.props.counter;
+    let num = this.state.num;
+    if (num * 10 < playList.length) {
+      let arr = playList
+        .slice(num * 10, num * 10 + 10)
+        .filter(r => !r.url)
+        .map(r => r.id)
+        .join(",");
+      if (arr.length) await common.httpDetUrl(arr);
       this.setState({
-        num: this.state.num + 1
+        num: num + 1
       });
     }
   }
-  changePlaynum(i) {
-    let { songUrl, playList } = this.props.counter;
-    let musicData = {};
-    this.props.addRedux(i, 'addPlayNum');
-    let _obj = playList.playlist.tracks[i];
-    musicData =
-      process.env.TARO_ENV === 'weapp'
-        ? {
-            title: _obj.name,
-            epname: _obj.ar[0].name,
-            singer: _obj.al.name,
-            coverImgUrl: _obj.al.picUrl,
-            src: this.getUrl(i)
-          }
-        : {
-            src: this.getUrl(i)
-          };
-    this.props.addRedux(musicData, 'updateAudioContext');
-    if (!this.props.counter.addMusicType) {
-      this.props.addRedux(true, 'addMusicType');
-    }
+  async changePlaynum(i) {
+    await this.props.addRedux(i, "addPlayNum");
+    common.update();
   }
   onClickImg() {
     Taro.navigateTo({
-      url: '/pages/detail/index'
+      url: "/pages/detail/index"
     });
   }
-  getTime(i) {
-    let { playList } = this.props.counter;
-    let time = playList.playlist.tracks[i].dt / 60000;
-    let arr = [time - (time % 1), parseInt((time % 1) * 60)];
-    return `${arr[0] < 10 ? '0' + arr[0] : arr[0]}: ${arr[1] < 10 ? '0' + arr[1] : arr[1]}`;
-  }
   render() {
-    let { songUrl, playList, playnum, musicType } = this.props.counter;
+    let { playNum, musicType, playList } = this.props.counter;
     return (
-      <View className="play fixed">
-        {songUrl.length ? (
+      <View className="plays fixed">
+        {playList.length ? (
           <View className="main">
             <Image
               onClick={this.onClickImg}
-              src={playList.playlist.tracks[playnum].al.picUrl}
+              src={common.img(playList[playNum].al.picUrl)}
               mode="widthFix"
-              className={musicType ? 'img animation-running' : 'img animation-paused'}
+              className={
+                musicType ? "img animation-running" : "img animation-paused"
+              }
             ></Image>
             <View className="info">
-              <Text>{playList.playlist.tracks[playnum].name}</Text>
+              <Text>{playList[playNum].name}</Text>
               <Text>
-                {playList.playlist.tracks[playnum].ar[0].name} - {playList.playlist.tracks[playnum].al.name}
+                {playList[playNum].ar[0].name} - {playList[playNum].al.name}
               </Text>
             </View>
             <View className="icon">
@@ -244,7 +156,7 @@ class Play extends Component {
                 <AtFloatLayout
                   isOpened={this.state.isOpened}
                   className="playatfloatlayout"
-                  title={`当前播放 ${songUrl.length}`}
+                  title={`当前播放 ${playList.length}`}
                   onClose={this.handleChange.bind(this, false)}
                 >
                   <ScrollView
@@ -252,19 +164,19 @@ class Play extends Component {
                     scrollWithAnimation
                     scrollAnchoring
                     onScrollToLower={this.onScrollToLower.bind(this)}
-                    style={{ height: ['300px'] }}
+                    style={{ height: ["300px"] }}
                   >
                     <AtList>
-                      {playList.playlist.tracks.map((r, i) => {
+                      {playList.map((r, i) => {
                         if (i < this.state.num * 10)
                           return (
                             <AtListItem
-                              className={i === playnum ? 'listActive' : ''}
-                              thumb={r.al.picUrl}
-                              disabled={songUrl[i].url ? false : true}
-                              title={r.name + ' - ' + r.ar[0].name}
+                              className={i === playNum ? "listActive" : ""}
+                              thumb={common.img(r.al.picUrl)}
+                              disabled={playList[i].url ? false : true}
+                              title={r.name + " - " + r.ar[0].name}
                               key={r.name + i}
-                              extraText={this.getTime(i)}
+                              extraText={common.getTime(r.dt / 1000)}
                               onClick={this.changePlaynum.bind(this, i)}
                             />
                           );
@@ -276,7 +188,7 @@ class Play extends Component {
             </View>
           </View>
         ) : (
-          ''
+          ""
         )}
       </View>
     );

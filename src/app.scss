@@ -1,16 +1,17 @@
+@import './common/css/common.scss';
 page {
   font-size: 24px;
   height: 100%;
   color: #fff;
   background-color: $bg-color;
   box-sizing: border-box;
+  position: relative;
 }
 #app {
   box-sizing: border-box;
   font-size: 24px;
   height: 100%;
   color: #fff;
-  background-color: $bg-color;
 }
 .none {
   display: none;
@@ -111,4 +112,8 @@ page {
       }
     }
   }
+}
+.swiper-slide {
+  // 解决h5 width 100%被冲掉的问题!
+  width: 100% !important;
 }

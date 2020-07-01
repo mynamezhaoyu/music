@@ -1,0 +1,188 @@
+@import '../../common/css/common.scss';
+.list {
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+  .song__bg {
+    transform: scale(1.2);
+    transform-origin: center top;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(50px) brightness(0.8);
+    overflow: hidden;
+    transition: opacity 0.3s linear;
+    z-index: -1;
+  }
+  .navbar {
+    position: sticky;
+    top: 0;
+    height: 90px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    .navbar-left {
+      flex: 1;
+    }
+    .navbar-center {
+      font-size: 40px;
+      flex: 3;
+      text-align: center;
+    }
+    .navbar-right {
+      flex: 1;
+    }
+  }
+  .info {
+    padding: 30px 20px 30px 20px;
+    .info-top {
+      display: flex;
+      position: relative;
+      .img {
+        height: 260px;
+        width: 260px;
+        border-radius: 10px;
+        flex-basis: 260px;
+        flex-shrink: 0;
+      }
+      .playCount {
+        position: absolute;
+        top: 5px;
+        right: calc(100% - 250px);
+      }
+      .text-area {
+        font-size: 30px;
+        margin-left: 20px;
+        flex-grow: 0;
+        flex-shrink: 1;
+        .name {
+          font-size: 34px;
+          color: #fefefe;
+          line-height: 45px;
+        }
+        .u-name {
+          display: flex;
+          align-items: center;
+          padding: 15px 0;
+          position: relative;
+          .u-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 10px;
+          }
+          .vip {
+            background-image: url("https://s3.music.126.net/mobile-new/img/usericn_3x.png?71c26f814f7ee3c5594694c1b6234ea8=");
+            background-size: 140px auto;
+            background-repeat: no-repeat;
+            position: absolute;
+            left: 42px;
+            bottom: 5px;
+            width: 24px;
+            height: 24px;
+            background-position: -80px 0;
+          }
+        }
+        .introduction {
+          color: #e2e2e2;
+        }
+      }
+    }
+    .info-bottom {
+      display: flex;
+      justify-content: space-around;
+      padding-top: 30px;
+      .icon {
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        height: 90px;
+      }
+    }
+  }
+  .scrollview {
+    height: 100%;
+  }
+  .song {
+    background-color: $bg-color;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    overflow: hidden;
+    border: 1px solid #636363;
+    font-size: 35px;
+    height: calc(100% - 90px);
+    .header {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px 0 20px;
+      .play {
+        display: flex;
+        align-items: center;
+      }
+      .all {
+        margin-left: 25px;
+      }
+      .all-music {
+        font-size: 30px;
+        color: rgb(199, 199, 199);
+        display: inline-block;
+        width: 140px;
+        text-align-last: justify;
+        margin-left: 10px;
+      }
+      .collect {
+        background: $bg-theme-color;
+        color: #fff;
+        font-size: 32px;
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        border-radius: 50px;
+      }
+    }
+  }
+  .music-list {
+    height: 100%;
+    .detail {
+      font-size: 30px;
+      margin: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      .num {
+        width: 70px;
+        text-align: center;
+        color: rgb(199, 199, 199);
+      }
+      .name {
+        display: flex;
+        align-items: center;
+        .singer {
+          font-size: 25px;
+          color: rgb(199, 199, 199);
+        }
+      }
+      &:last-child {
+        padding-bottom: 120px;
+      }
+    }
+    .more {
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
+    }
+  }
+  .line-clamp2 {
+    @include line-clamp(2);
+  }
+  .line-clamp1 {
+    @include line-clamp(1);
+  }
+}
