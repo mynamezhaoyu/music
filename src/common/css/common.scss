@@ -2,11 +2,19 @@ $bg-color: #242424;
 $bg-light-color: #484848;
 $bg-theme-color: #e61607;
 $content: 20px;
-@mixin line-clamp ($index) {
+@mixin line-clamp($index) {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: $index ;
+  -webkit-line-clamp: $index;
   /* autoprefixer: off */
   -webkit-box-orient: vertical;
+}
+@mixin line-clamp-two($index) {
+  white-space: nowrap;
+  -webkit-line-clamp: $index;
+  overflow: hidden;
+}
+.f-1 {
+  flex: 1;
 }

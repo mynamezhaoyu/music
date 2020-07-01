@@ -182,4 +182,7 @@
   .line-clamp2 {
     @include line-clamp(2);
   }
+  .line-clamp1 {
+    @include line-clamp(1);
+  }
 }

@@ -92,7 +92,7 @@ class Detail extends Component {
     clearInterval(this.trace);
     this.newTime = bu
       ? 0
-      : parseInt(this.props.counter.audioContext.currentTime);
+      : parseInt(this.props.counter.audioContext.currentTime || 0);
     this.setState({
       sliderValue: this.newTime,
       time: common.getTime(this.newTime)

@@ -1,6 +1,6 @@
 let path = require('path');
 const config = {
-  projectName: 'myApp',
+  projectName: 'music',
   date: '2020-2-25',
   designWidth: 750,
   deviceRatio: {

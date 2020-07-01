@@ -24,9 +24,7 @@ class Play extends Component {
     };
   }
   componentWillMount() {
-    console.log(1);
     Taro.eventCenter.on("playMusic", () => {
-      console.log(2);
       this.play();
     });
   }

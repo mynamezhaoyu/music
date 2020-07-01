@@ -31,13 +31,24 @@ class Personalized extends Component {
     Taro.eventCenter.trigger("playMusic");
   }
   async getPlayList(val) {
-    Taro.navigateTo({
-      url: "/pages/list/index"
-    });
     let arr = await common.play(val.id);
-    Taro.$store.dispatch({
+    await Taro.$store.dispatch({
       type: "updateSongList",
       data: { ...arr[0], ...{ url: arr[1] } }
+    });
+    // 这里需要单独处理一下，因为网易云接口变动，导致 歌单详情只给了10条有name的数据。为了优化滚动，
+    let index = arr[1].filter(r => r.name).length;
+    if (index < 11) {
+      await common.httpDetUrl(
+        arr[1]
+          .slice(index, index + 10)
+          .map(r => r.id)
+          .join(","),
+        false
+      );
+    }
+    Taro.navigateTo({
+      url: "/pages/list/index"
     });
   }
   render() {

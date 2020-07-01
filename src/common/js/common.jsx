@@ -10,7 +10,7 @@ let obj = {
     let arr = data.data.playlist.tracks; // 歌单详情里面已经给出前20条数据 但是不包含url地址
     let arr2 = data.data.playlist.trackIds; // 歌单的全部id
     let url = await this.musicUrl(arr.map(r => r.id).join(",")); // 拿这20条带id的数据 去取url， 因为已经包含了name，图片信息，所以不需要单独在调用歌曲详情接口
-    // 拿到前20条的url数据
+    // 拿到前20条的url数据(网易云接口变了，现在只显示10条了。很难受。这样就导致查看歌单详情滚动的时候。有bug.阿西吧)
     url.data.data.map(r => {
       let n = arr.findIndex(n => n.id === r.id); // 在20条数据中找到匹配的
       let _n = arr2.findIndex(n => n.id === r.id); // 在 全部id 中搜到匹配的
@@ -44,12 +44,11 @@ let obj = {
     // 因为微信小程序具备后台播放的功能。所以配置的参数不同
     let [musicData, data] = [{}, playList[playNum]];
     if (process.env.TARO_ENV === "weapp") {
-      let _obj = data;
       musicData = {
-        title: _obj.name,
-        epname: _obj.ar[0].name,
-        singer: _obj.al.name,
-        coverImgUrl: _obj.al.picUrl,
+        title: data.name,
+        epname: data.ar[0].name,
+        singer: data.al.name,
+        coverImgUrl: data.al.picUrl,
         src:
           data.url ||
           `https://music.163.com/song/media/outer/url?id=${data.id}.mp3`
@@ -150,40 +149,35 @@ let obj = {
     this.update(index);
   },
   async httpDetUrl(arr, type = true) {
+    // 请求歌曲详情，歌曲url。可以多个id，也可以单个id。可以是播放列表滚动请求，也可以是歌单列表滚动。
     arr = arr + "";
-    let { playList } = Taro.$store.getState().counter;
+    let { playList, songList } = Taro.$store.getState().counter;
     // 请求没有url的数据
-
-    let [det, url] = [[], []];
-    //
-    if (type) {
-      [det, url] = await Promise.all([
-        this.musicDetail(arr),
-        this.musicUrl(arr)
-      ]);
-      [det, url] = [det.data.songs, url.data.data];
-    } else {
-      det = await this.musicDetail(arr);
-      det = det.data.songs;
-    }
+    let data = type ? playList : songList.url;
+    let [det, url] = await Promise.all([
+      this.musicDetail(arr),
+      this.musicUrl(arr)
+    ]);
+    [det, url] = [det.data.songs, url.data.data];
     arr.split(",").map(r => {
       r = Number(r);
       let [tDet, tUrl, tPlayList, tPlayListIndex] = [
         // 找到对应id的详情，找对对象Id的url数据，找到原先没有URl的数据，找到原先播放列表数据的位置
         det.filter(n => n.id === r)[0],
         url.filter(n => n.id === r)[0],
-        playList.filter(n => n.id === r)[0],
-        playList.findIndex(n => n.id === r)
+        data.filter(n => n.id === r)[0],
+        data.findIndex(n => n.id === r)
       ];
-      playList[tPlayListIndex] = { ...{}, ...tPlayList, ...tDet, ...tUrl };
+      data[tPlayListIndex] = { ...{}, ...tPlayList, ...tDet, ...tUrl };
     });
     await Taro.$store.dispatch({
-      type: "addPlayList",
-      data: playList
+      type: type ? "addPlayList" : "updateSongList",
+      data: type ? data : { ...songList, ...{ url: data } }
     });
     return [det, url];
   },
   img(src) {
+    // 给图片加个限制，不然请求的图片太大了。
     return src ? src + "?param=500y500" : "";
   }
 };

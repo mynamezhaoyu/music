@@ -7,6 +7,7 @@ import http from "../../services/api";
 import { connect } from "@tarojs/redux";
 import { addRedux } from "../../actions/counter";
 import Box from "../../components/box/index";
+import NewMusic from "../../components/newMusic/index";
 @connect(
   ({ counter }) => ({
     counter
@@ -52,6 +53,7 @@ class Index extends Component {
         <Box>
           <Header></Header>
           <Personalized></Personalized>
+          <NewMusic></NewMusic>
         </Box>
       </View>
     );
