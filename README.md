@@ -9,7 +9,9 @@
 2. api 接口来自[网易云音乐 API](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e5%88%9d%e5%a7%8b%e5%8c%96%e6%98%b5%e7%a7%b0)
 
 ## 图片展示
-[![UPbMj0.th.jpg](https://s1.ax1x.com/2020/07/06/UPbMj0.th.jpg)](https://imgchr.com/i/UPbMj0) [![UPbKcq.th.jpg](https://s1.ax1x.com/2020/07/06/UPbKcq.th.jpg)](https://imgchr.com/i/UPbKcq) [![UPbn9s.th.jpg](https://s1.ax1x.com/2020/07/06/UPbn9s.th.jpg)](https://imgchr.com/i/UPbn9s)
+[![UPbGEF.md.png](https://s1.ax1x.com/2020/07/06/UPbGEF.md.png)](https://imgchr.com/i/UPbGEF)
+[![UPb3HU.md.png](https://s1.ax1x.com/2020/07/06/UPb3HU.md.png)](https://imgchr.com/i/UPb3HU)
+[![UPbJN4.md.png](https://s1.ax1x.com/2020/07/06/UPbJN4.md.png)](https://imgchr.com/i/UPbJN4)
 # 更新日志
 ### 1.1.0 | 2020.07.01
 - 正式增加记录。工作计划--- 首页增加新歌，新碟。
