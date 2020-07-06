@@ -55,7 +55,7 @@ class List extends Component {
           data: playList.concat(val)
         });
         index = playList.length - 1;
-      } else if (index > -1 && !playList[index].val){
+      } else if (index > -1 && !playList[index].val) {
         // 如果在歌单中，
         playList[index] = val;
         await Taro.$store.dispatch({
@@ -137,7 +137,11 @@ class List extends Component {
               }}
             >
               <View className="info-top">
-                <Image src={common.img(data.coverImgUrl)} className="img" />
+                <Image
+                  src={common.img(data.coverImgUrl)}
+                  className="img"
+                  lazyLoad={true}
+                />
                 <View className="playCount">
                   {(data.playCount + "").length > 5
                     ? (data.playCount + " ").slice(0, -5) + " 万"

@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     process.env.TARO_ENV === "weapp"
       ? Taro.getBackgroundAudioManager()
       : Taro.createInnerAudioContext(), // 背景音乐实例
-  musicType: true // 播放状态（开始，停止）
+  musicType: true, // 播放状态（开始，停止）
+  newMusic: [] // 新歌
 };
 
 export default function counter(state = INITIAL_STATE, action) {
@@ -70,6 +71,15 @@ export default function counter(state = INITIAL_STATE, action) {
         return {
           ...state,
           musicType: action.data
+        };
+      }
+    },
+    {
+      name: "addNewMusic",
+      fn: () => {
+        return {
+          ...state,
+          newMusic: action.data
         };
       }
     }

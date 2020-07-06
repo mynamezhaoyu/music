@@ -45,6 +45,10 @@ class Index extends Component {
       http.get("personalized?limit=10").then(res => {
         this.props.addRedux(res.data.result, "addPersonalized");
       });
+      // 请求推荐歌单数据
+      http.get("personalized/newsong").then(res => {
+        this.props.addRedux(res.data.result, "addNewMusic");
+      });
     }
   };
   render() {

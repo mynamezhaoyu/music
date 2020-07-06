@@ -54,8 +54,7 @@ class Personalized extends Component {
   render() {
     return (
       <View className="personalized">
-        <View className="title">推荐歌单</View>
-        <View className="slogan">为你精挑细选</View>
+        <View className="slogan">发现好歌单</View>
         <ScrollView
           scrollX="true"
           scrollAnchoring="true"
@@ -66,6 +65,7 @@ class Personalized extends Component {
               <View className="list" key={r.name + i}>
                 <View className="item">
                   <Image
+                    lazyLoad={true}
                     src={common.img(r.picUrl)}
                     className="img"
                     onClick={this.getPlayList.bind(this, r)}

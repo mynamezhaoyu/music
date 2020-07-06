@@ -1,20 +1,54 @@
-@import '../../common/css/common.scss';
+@import "../../common/css/common.scss";
 .new-music {
   background-color: $bg-color;
   overflow: hidden;
-  & ::after {
-    border-color: transparent;
+  .title {
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 36px;
+    margin: 0 20px;
+    .more {
+      color: #b5b5b5;
+      display: flex;
+      flex: 0 30%;
+      justify-content: space-between;
+    }
+    .active {
+      color: #fff;
+    }
   }
-
-  .banner {
+  .music {
     overflow: hidden;
-    margin:10px 20px 20px 20px;
     border-radius: 10px;
     position: relative;
-    .banner-img {
-      height: 100%;
-      width: 100%;
-      border-radius: 10px;
+    .music-swiper {
+      height: 350px;
+      .item {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        margin: 20px;
+        .info {
+          display: flex;
+          align-items: center;
+          height: 33%;
+          .name {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-left: 20px;
+            height: 100%;
+          }
+        }
+      }
+      .item-img {
+        height: 100px;
+        width: 100px;
+        border-radius: 10px;
+      }
     }
     .icon {
       position: absolute;
