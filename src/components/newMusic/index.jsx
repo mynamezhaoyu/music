@@ -19,6 +19,7 @@ class Header extends Component {
   }
   componentDidShow() {}
   onTaggle(val) {
+    console.log(val);
     this.setState({ count: val });
   }
   render() {
