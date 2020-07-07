@@ -10,7 +10,8 @@ const INITIAL_STATE = {
       ? Taro.getBackgroundAudioManager()
       : Taro.createInnerAudioContext(), // 背景音乐实例
   musicType: true, // 播放状态（开始，停止）
-  newMusic: [] // 新歌
+  newMusic: [], // 新歌
+  newDisc: [] // 新碟
 };
 
 export default function counter(state = INITIAL_STATE, action) {
@@ -34,7 +35,7 @@ export default function counter(state = INITIAL_STATE, action) {
       }
     },
     {
-      name: "addPlayList", // 点击歌单专用，当前播放列表变成歌单数据
+      name: "addPlayList", // 点击歌曲,当前播放列
       fn: () => {
         Object.assign(state.playList, action.data);
         return state;
@@ -80,6 +81,15 @@ export default function counter(state = INITIAL_STATE, action) {
         return {
           ...state,
           newMusic: action.data
+        };
+      }
+    },
+    {
+      name: "addNewDisc",
+      fn: () => {
+        return {
+          ...state,
+          newDisc: action.data
         };
       }
     }

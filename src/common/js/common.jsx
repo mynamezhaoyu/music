@@ -107,6 +107,10 @@ let obj = {
     if (!playList[index].url) {
       // 如果没有url，用id请求数据
       let data = await this.httpDetUrl(playList[index].id);
+      await Taro.$store.dispatch({
+        type: "addPlayList",
+        data: data[2]
+      });
       if (data[1][0].url) {
         // 如果请求回来还是没有url，那么证明这首歌，是收费或者是vip歌曲。直接进行下一首。
         this.update(index);
@@ -133,6 +137,10 @@ let obj = {
       // taro 这里给我自动编译成取反，无解。我只能手动加取反
       // 如果没有url，用id请求数据
       let data = await this.httpDetUrl(playList[index].id);
+      await Taro.$store.dispatch({
+        type: "addPlayList",
+        data: data[2]
+      });
       if (data[1][0].url) {
         // 如果请求回来还是没有url，那么证明这首歌，是收费或者是vip歌曲。直接进行下一首。
         this.update(index);
@@ -170,11 +178,7 @@ let obj = {
       ];
       data[tPlayListIndex] = { ...{}, ...tPlayList, ...tDet, ...tUrl };
     });
-    await Taro.$store.dispatch({
-      type: type ? "addPlayList" : "updateSongList",
-      data: type ? data : { ...songList, ...{ url: data } }
-    });
-    return [det, url];
+    return [det, url, data];
   },
   img(src) {
     // 给图片加个限制，不然请求的图片太大了。

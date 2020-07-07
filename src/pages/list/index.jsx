@@ -37,7 +37,13 @@ class List extends Component {
         .filter(r => !r.url)
         .map(r => r.id)
         .join(",");
-      if (arr.length) await common.httpDetUrl(arr, false);
+      if (arr.length) {
+        let data = await common.httpDetUrl(arr, false);
+        await Taro.$store.dispatch({
+          type: "updateSongList",
+          data: { ...songList, ...{ url: data[2] } }
+        });
+      }
       this.setState({
         num: this.state.num + 1
       });
@@ -54,8 +60,9 @@ class List extends Component {
           type: "addPlayList",
           data: playList.concat(val)
         });
+        console.log(playList);
         index = playList.length - 1;
-      } else if (index > -1 && !playList[index].val) {
+      } else if (index > -1 && !playList[index].url) {
         // 如果在歌单中，
         playList[index] = val;
         await Taro.$store.dispatch({
@@ -65,7 +72,11 @@ class List extends Component {
       }
       await common.update(index);
     } else {
-      await common.httpDetUrl(val.id);
+      let data = await common.httpDetUrl(val.id);
+      await Taro.$store.dispatch({
+        type: "addPlayList",
+        data: data[2]
+      });
     }
     Taro.navigateTo({
       url: "/pages/detail/index"
@@ -101,7 +112,7 @@ class List extends Component {
     let [url, data] = [songList.url, songList.playlist];
     return (
       url && (
-        <View className="list" style={{ paddingTop: [`${this.state.top}PX`] }}>
+        <View className="list" style={{ paddingTop: [`${this.state.top}px`] }}>
           <Image className="song__bg" src={common.img(data.coverImgUrl)} />
           <ScrollView
             className="scrollview"

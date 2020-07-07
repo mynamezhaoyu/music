@@ -27,15 +27,6 @@ class Play extends Component {
     Taro.eventCenter.on("playMusic", () => {
       this.play();
     });
-  }
-
-  // 初始化播放
-  async play() {
-    this.setState({
-      floatLayout: false,
-      num: 1
-    });
-    await common.update();
     let audio = this.props.counter.audioContext;
     // 监听播放完了，接着放下一首
     audio.onEnded(() => {
@@ -49,14 +40,24 @@ class Play extends Component {
       Taro.eventCenter.trigger("down");
     });
     if (process.env.TARO_ENV === "h5") {
-      audio.onStop(() => {
+      audio.onStop((err) => {
+        console.log("难受", err);
         audio.play();
-        audio.seek(this.time + 0.2);
+        audio.seek(this.time + 0.1);
       });
-      audio.onTimeUpdate(() => {
+      audio.onTimeUpdate((err) => {
         this.time = audio.currentTime;
       });
     }
+  }
+
+  // 初始化播放
+  async play() {
+    this.setState({
+      floatLayout: false,
+      num: 1
+    });
+    await common.update();
   }
   // 暂停
   pause() {
@@ -96,7 +97,13 @@ class Play extends Component {
         .filter(r => !r.url)
         .map(r => r.id)
         .join(",");
-      if (arr.length) await common.httpDetUrl(arr);
+      if (arr.length) {
+        let data = await common.httpDetUrl(arr);
+        await Taro.$store.dispatch({
+          type: "addPlayList",
+          data: data[2]
+        });
+      }
       this.setState({
         num: num + 1
       });

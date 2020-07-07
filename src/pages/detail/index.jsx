@@ -112,7 +112,7 @@ class Detail extends Component {
       data && (
         <View
           className="details"
-          style={{ paddingTop: [`${this.state.num}PX`] }}
+          style={{ paddingTop: [`${this.state.num}px`] }}
         >
           <Image className="song__bg" src={common.img(data.al.picUrl)} />
           <View className="navbar">
