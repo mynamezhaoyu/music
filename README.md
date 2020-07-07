@@ -9,7 +9,6 @@
 2. api 接口来自[网易云音乐 API](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e5%88%9d%e5%a7%8b%e5%8c%96%e6%98%b5%e7%a7%b0)
 
 ## 图片展示
-
 <img src="https://s1.ax1x.com/2020/07/06/UPbGEF.png" width="300"  height="500" />
 <br>
 <br>
