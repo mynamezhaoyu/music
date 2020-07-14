@@ -32,7 +32,7 @@ class Header extends Component {
   }
   async play(val, type) {
     // 歌单列表点击了播放
-    let { playList } = this.props.counter;
+    let { playList, songList } = this.props.counter;
     if (type === 1) {
       let index = playList.findIndex(r => val.id === r.id);
       if (index === -1) {
@@ -56,7 +56,34 @@ class Header extends Component {
       // Taro.navigateTo({
       //   url: "/pages/detail/index"
       // });
+      return;
     }
+    let data = await http.get("album", {
+      id: val.id,
+      timestamp: new Date()
+    });
+    let { album, songs } = data.data;
+    await Taro.$store.dispatch({
+      type: "updateSongList",
+      data: {
+        url: songs,
+        playlist: {
+          img: album.picUrl,
+          playCount: 0,
+          name: album.name,
+          avatarUrl: album.artist.picUrl,
+          userType: 200,
+          nickname: album.artist.name,
+          description: album.description,
+          commentCount: 0,
+          subscribedCount: 0
+        }
+      }
+    });
+    // coverImgUrl playCount name creator.avatarUrl creator.userType creator.nickname description commentCount subscribedCount
+    Taro.navigateTo({
+      url: "/pages/list/index"
+    });
   }
   render() {
     let { newMusic, newDisc } = this.props.counter;

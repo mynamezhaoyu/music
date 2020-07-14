@@ -53,31 +53,35 @@ class List extends Component {
     // 歌单列表点击了播放
     let { playList } = this.props.counter;
     let index = playList.findIndex(r => val.id === r.id);
+    let _data;
     if (val.url) {
       if (index === -1) {
         // 如果不在歌单列表中, 手动给他加一条。
-        await Taro.$store.dispatch({
-          type: "addPlayList",
-          data: playList.concat(val)
-        });
-        console.log(playList);
-        index = playList.length - 1;
-      } else if (index > -1 && !playList[index].url) {
+        _data = playList.concat(val);
+      } else if (index > -1) {
         // 如果在歌单中，
-        playList[index] = val;
-        await Taro.$store.dispatch({
-          type: "addPlayList",
-          data: playList
-        });
+        let list = JSON.parse(JSON.stringify(playList));
+        list[index] = val;
+        _data = list;
       }
-      await common.update(index);
     } else {
       let data = await common.httpDetUrl(val.id);
-      await Taro.$store.dispatch({
-        type: "addPlayList",
-        data: data[2]
-      });
+      if (index === -1) {
+        // 如果不在歌单列表中, 手动给他加一条。
+        _data = playList.concat(data[2]);
+      } else if (index > -1) {
+        // 如果在歌单中，
+        let list = JSON.parse(JSON.stringify(playList));
+        list[index] = data[2];
+        _data = list;
+      }
     }
+    await Taro.$store.dispatch({
+      type: "addPlayList",
+      data: _data
+    });
+    index = index === -1 ? (playList.length ? playList.length - 1 : 0) : index;
+    await common.update(index);
     Taro.navigateTo({
       url: "/pages/detail/index"
     });
@@ -110,10 +114,32 @@ class List extends Component {
   render() {
     let { songList } = this.props.counter;
     let [url, data] = [songList.url, songList.playlist];
+    let _data = {};
+    if (data) {
+      _data = {
+        img: data.img || data.coverImgUrl,
+        playCount: data.playCount
+          ? (data.playCount + "").length > 5
+            ? (data.playCount + " ").slice(0, -5) + " 万"
+            : data.playCount
+          : 0,
+        name: data.name,
+        avatarUrl: data.avatarUrl || data.creator.avatarUrl,
+        userType: data.userType || data.creator.userType,
+        nickname: data.nickname || data.creator.nickname,
+        description: data.description,
+        commentCount: data.commentCount,
+        subscribedCount: data.subscribedCount
+          ? (data.subscribedCount + "").length > 5
+            ? (data.subscribedCount + " ").slice(0, -5) + " 万"
+            : data.subscribedCount
+          : 0
+      };
+    }
     return (
       url && (
         <View className="list" style={{ paddingTop: [`${this.state.top}px`] }}>
-          <Image className="song__bg" src={common.img(data.coverImgUrl)} />
+          <Image className="song__bg" src={common.img(_data.img)} />
           <ScrollView
             className="scrollview"
             scrollY={this.state.y}
@@ -149,36 +175,30 @@ class List extends Component {
             >
               <View className="info-top">
                 <Image
-                  src={common.img(data.coverImgUrl)}
+                  src={common.img(_data.img)}
                   className="img"
                   lazyLoad={true}
                 />
-                <View className="playCount">
-                  {(data.playCount + "").length > 5
-                    ? (data.playCount + " ").slice(0, -5) + " 万"
-                    : data.playCount}
-                </View>
+                <View className="playCount">{_data.playCount}</View>
                 <View className="text-area">
-                  <View className="name line-clamp2">{data.name}</View>
+                  <View className="name line-clamp2">{_data.name}</View>
                   <View className="u-name">
                     <Image
-                      src={common.img(data.creator.avatarUrl)}
+                      src={common.img(_data.avatarUrl)}
                       className="u-img"
                     />
-                    {data.creator.userType === 200 && (
-                      <Text className="vip"></Text>
-                    )}
-                    <Text>{data.creator.nickname}</Text>
+                    {_data.userType === 200 && <Text className="vip"></Text>}
+                    <Text>{_data.nickname}</Text>
                   </View>
                   <View className="line-clamp2 introduction">
-                    {data.description}
+                    {_data.description}
                   </View>
                 </View>
               </View>
               <View className="info-bottom">
                 <View className="icon">
                   <IconFont name="pinglun1" size="50" color="#fff" />
-                  <Text>{data.commentCount}</Text>
+                  <Text>{_data.commentCount}</Text>
                 </View>
                 <View className="icon">
                   <IconFont name="pinglun" size="50" color="#fff" />
@@ -195,10 +215,7 @@ class List extends Component {
                 </View>
                 <View className="collect" onClick={this.subscribe.bind(this)}>
                   + 收藏(
-                  {(data.subscribedCount + " ").length > 5
-                    ? (data.subscribedCount + " ").slice(0, -5) + " 万"
-                    : data.subscribedCount}
-                  )
+                  {_data.subscribedCount})
                 </View>
               </View>
               <ScrollView

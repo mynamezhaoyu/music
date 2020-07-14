@@ -161,7 +161,8 @@ let obj = {
     arr = arr + "";
     let { playList, songList } = Taro.$store.getState().counter;
     // 请求没有url的数据
-    let data = type ? playList : songList.url;
+    let _data = type ? playList : songList.url;
+    let data = JSON.parse(JSON.stringify(_data));
     let [det, url] = await Promise.all([
       this.musicDetail(arr),
       this.musicUrl(arr)
@@ -176,6 +177,7 @@ let obj = {
         data.filter(n => n.id === r)[0],
         data.findIndex(n => n.id === r)
       ];
+      tPlayListIndex = tPlayListIndex < 0 ? 0 : tPlayListIndex;
       data[tPlayListIndex] = { ...{}, ...tPlayList, ...tDet, ...tUrl };
     });
     return [det, url, data];
