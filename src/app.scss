@@ -1,4 +1,4 @@
-@import './common/css/common.scss';
+@import "./common/css/common.scss";
 page {
   font-size: 24px;
   height: 100%;
@@ -6,12 +6,16 @@ page {
   background-color: $bg-color;
   box-sizing: border-box;
   position: relative;
+  font-family: "Microsoft YaHei", tahoma, arial, "Hiragino Sans GB",
+    "\5b8b\4f53", sans-serif;
 }
 #app {
   box-sizing: border-box;
   font-size: 24px;
   height: 100%;
   color: #fff;
+  font-family: "Microsoft YaHei", tahoma, arial, "Hiragino Sans GB",
+    "\5b8b\4f53", sans-serif;
 }
 .none {
   display: none;
@@ -32,14 +36,20 @@ page {
     background-color: #e61607;
   }
 }
+// 搜索框样式调整
 .header-search.at-search-bar {
   background-color: transparent;
+  height: 100px;
+  line-height: 100px;
   .at-search-bar__input-cnt {
     background-color: $bg-light-color;
     .at-icon-search {
       color: #fff;
     }
     .weui-input {
+      color: #fff;
+    }
+    .at-search-bar__input {
       color: #fff;
     }
   }

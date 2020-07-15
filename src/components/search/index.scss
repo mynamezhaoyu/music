@@ -1,0 +1,72 @@
+@import "../../common/css/common.scss";
+@import "~taro-ui/dist/style/components/flex.scss";
+._search {
+  position: relative;
+  .top-view {
+    position: absolute;
+    transition: all 0.3s;
+    left: -999px;
+    top: 100px;
+    z-index: 999;
+    width: 100%;
+    background-color: $bg-color;
+    opacity: 0;
+    overflow-x: hidden;
+    .title {
+      font-size: 40px;
+      margin: 0 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+  .top-view-show {
+    opacity: 1;
+    left: 0;
+  }
+  .hot {
+    font-size: 30px;
+    overflow-y: scroll;
+    color: #fff;
+    .list {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      overflow-x: hidden;
+      .num {
+        flex-basis: 70px;
+        text-align: center;
+        flex-shrink: 0;
+        font-weight: 600;
+        font-family: -webkit-pictograph;
+        font-size: 35px;
+      }
+      .red {
+        color: $text-theme-color;
+      }
+      .secondary {
+        opacity: 0.5;
+      }
+      .searchWord {
+        overflow: hidden;
+        .iconType {
+          margin-left: 20px;
+          color: $text-theme-color;
+          font-weight: 700;
+          font-style: oblique;
+        }
+        .newIconType {
+          color: #0cb501;
+        }
+        .promote {
+          font-style: normal;
+        }
+      }
+      .content {
+        padding-top: 10px;
+        font-size: 20px;
+        opacity: 0.5;
+        overflow: hidden;
+      }
+    }
+  }
+}

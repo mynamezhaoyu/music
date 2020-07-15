@@ -1,8 +1,8 @@
 import Taro, { Component } from "@tarojs/taro";
 import { View, Swiper, SwiperItem, Image } from "@tarojs/components";
-import { AtSearchBar } from "taro-ui";
 import "./header.scss";
 import { common, http, addRedux, connect } from "../../common/js/export";
+import Search from "../search/index";
 @connect(({ counter }) => ({
   counter
 }))
@@ -20,11 +20,7 @@ class Header extends Component {
   render() {
     return (
       <View className="_header">
-        <AtSearchBar
-          actionName="取消"
-          value={this.state.inputVal}
-          className="header-search"
-        />
+        <Search></Search>
         <View className="banner">
           <Swiper
             indicatorColor="#fff"
